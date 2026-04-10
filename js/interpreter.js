@@ -442,22 +442,17 @@ class Parser {
 
   parseType() {
     const tok = this.peek();
-    if (tok.kind === "KEYWORD") {
-      if (["INTEGER", "FLOAT", "REAL", "BOOLEAN", "CHARACTER", "STRING", "VOID"].includes(tok.value)) {
-        this.advance();
-        // Check for pointer
-        if (this.match("OP", "*")) {
-          return new Token("TYPE", "*" + tok.value);
-        }
-        return tok;
-      }
+    const val = String(tok.value).toUpperCase();
+    if (["INTEGER", "FLOAT", "REAL", "BOOLEAN", "CHARACTER", "STRING", "VOID"].includes(val)) {
+      this.advance();
+      // Check for pointer
+      if (this.match("OP", "*")) return new Token("TYPE", "*" + val);
+      return new Token("TYPE", val);
     }
     if (tok.kind === "IDENT") {
       this.advance();
       // Check for pointer
-      if (this.match("OP", "*")) {
-        return new Token("TYPE", "*" + tok.value);
-      }
+      if (this.match("OP", "*")) return new Token("TYPE", "*" + tok.value);
       return tok;
     }
     throw new Error(`Expected type at ${tok.line}:${tok.col}`);
@@ -466,8 +461,11 @@ class Parser {
   peekType() {
     // Helper to check if next token is a type (for function detection)
     const tok = this.peek();
-    if (tok.kind === "KEYWORD" && ["INTEGER", "FLOAT", "REAL", "BOOLEAN", "CHARACTER", "STRING", "VOID"].includes(tok.value)) {
-      return "FUNCTION";
+    if (tok.kind === "IDENT" || tok.kind === "KEYWORD") {
+      const upper = String(tok.value).toUpperCase();
+      if (["INTEGER", "FLOAT", "REAL", "BOOLEAN", "CHARACTER", "STRING", "VOID"].includes(upper)) {
+        return "FUNCTION";
+      }
     }
     return null;
   }
