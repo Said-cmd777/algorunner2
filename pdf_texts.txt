@@ -1,0 +1,5534 @@
+
+================================================================================
+FILE: Week2course.pdf
+================================================================================
+Lecture Notes :
+Algorithms
+2st week: Conditions and Loops
+Academic year : 2023-2024.
+1st Year Mathematics License,
+Faculty of Mathematics,
+University of Science and Technology Houari Boumediene.
+Content :
+• Quick recap of the first week.
+• 1st Class: Introduction to conditions and if statements
+• 2nd Class: Introduction to loops
+1/24
+if Statements and Control Flow
+Motivation: The Need for If-Else Statements
+In the world of algorithmic programming, the ability to make decisions is crucial.
+Without the capability to make choices and perform different actions based on
+specific conditions, algorithms would be rigid and limited. This is where if-else
+statements come into play.
+• They allow algorithms to adapt and respond to different situations.
+• If-else statements help algorithms make decisions, just like humans do in
+everyday life.
+• They enable algorithms to solve problems more intelligently and efficiently.
+• Learning how to use if-else statements is a fundamental skill for any
+programmer or problem solver.
+2/24
+Syntax of If-Else Statements
+Syntax:
+If (<condition>) Then
+... // Code to execute when the condition is true
+Else
+... // Code to execute when the condition is false
+End If;
+!
+Remark:
+Conditions are expressions that evaluate to true or false. Based on the condi-
+tion’s result, the algorithm follows different execution paths.
+3/24
+Example: If-Else Statement
+Let’s consider a simple algorithm to determine if a person is eligible to vote based
+on their age:
+Example
+Algorithm Check_Voting_Eligibility;
+Var age: integer;
+Begin
+Write("Enter your age: ");
+Read(age);
+If (age >= 18) Then
+Write("You are eligible to vote.");
+Else
+Write("You are not eligible to vote.");
+End If;
+End;
+4/24
+Relational Operations
+Common Relational Operations and Symbols
+• Greater Than (>): It’s true if the left value is greater than the right
+value.
+• Less Than (<): It’s true if the left value is less than the right value.
+• Greater Than or Equal To (>=): It’s true if the left value is greater
+than or equal to the right value.
+• Less Than or Equal To (<=): It’s true if the left value is less than or
+equal to the right value.
+• Equal To (=): It’s true if the left value is equal to the right value.
+• Not Equal To (! =): It’s true if the left value is not equal to the right
+value.
+5/24
+Logical Operators
+Logical operators are used to combine and manipulate conditions in if-else
+statements. Here are the common logical operators:
+• And (&&) - Returns true if both conditions are true.
+• Or (||) - Returns true if at least one condition is true.
+• Not (!) - Reverses the condition; true becomes false and vice versa.
+Example: Logical Operators
+• If (age >= 18 && citizenship == "DZ") Then - Checks if a person
+is both 18 or older and a Algerian citizen.
+• If (!hasPermission) Then - Checks if a permission flag is false (i.e.,
+permission is denied).
+6/24
+Example: Multiple Conditions
+Consider an algorithm to determine if a student passed or failed an exam based on
+their score and attendance:
+Example
+Algorithm Check_Exam_Result;
+Var exam, attendance: float;
+Begin
+Write("Enter your exam grade: ");
+Read(exam);
+Write("Enter your attendance grade: ");
+Read(attendance);
+If (exam >= 10 && attendance >= 10) Then
+Write("Congratulations! You passed.");
+Else
+Write("You failed.");
+End If;
+End;
+7/24
+Nested If Statements
+In some situations, a single ‘if‘ statement may not be sufficient to express complex
+conditions. That’s where nested ‘if‘ statements come into play.
+With nested ‘if‘ statements, you can include one ‘if‘ statement within another,
+creating a hierarchy of conditions. This allows you to check multiple conditions,
+each with its own set of actions.
+8/24
+Example
+Consider a scenario where you are developing a system to recommend clothing based
+on the weather. You need to check both the temperature and whether it’s raining.
+Example
+If (temperature > 25) Then
+If (isRaining) Then
+Write("It’s hot and raining. Grab an umbrella and wear lightweight clothing.");
+Else
+Write("It’s hot and dry. Wear light clothing and stay hydrated.");
+End If;
+Else
+If (isRaining) Then
+Write("It’s cooler and raining. Wear a jacket or raincoat.");
+Else
+Write("It’s cooler and dry. Grab a jacket or sweater.");
+End If;
+End If;
+9/24
+Introducing the Switch Statement
+So far, we’ve explored if-else statements, which are great for making decisions based
+on conditions. However, in some cases, you might need to make decisions based on
+the value of a single variable, choosing from a list of predefined options.
+That’s where the switch statement comes into play. It provides a way to select
+one option among many based on the value of an expression.
+10/24
+Syntax of the Switch Statement
+The switch statement provides a more efficient way to handle multiple cases, and
+we’ll explore its usage with examples.
+Syntax
+Switch (expression)
+Case value1:
+// Code to execute when the expression equals value1
+Case value2:
+// Code to execute when the expression equals value2
+...
+End Switch;
+11/24
+Example: Using the Switch Statement
+Let’s take a look at an example of how the switch statement can be used to make
+decisions based on the value of an expression. In this case, we’ll determine the day
+of the week based on a numeric input.
+Algorithm Determine_Day_of_Week;
+Var dayNumber: integer;
+Begin
+Write("Enter a number (1-7)");
+Read(dayNumber);
+Switch (dayNumber)
+Case 1:
+Write("Monday");
+Case 2:
+Write("Tuesday");
+Case 3:
+Write("Wednesday");
+Case 4:
+Write("Thursday");
+Case 5:
+Write("Friday");
+Case 6:
+Write("Saturday");
+Case 7:
+Write("Sunday");
+Else
+Write("Error");
+End Switch;
+End;
+12/24
+Flowchatrs
+Introduction to Flowcharts
+A flowchart is a visual representation of an algorithm or a process. It uses various
+shapes and symbols to represent different elements and actions in a structured
+manner. Flowcharts help in visualizing and understanding the logical flow of a
+program.
+Key components of a flowchart include:
+• Start/End Symbol: Indicates the start or end of a process.
+• Process Symbol: Represents an action or operation.
+• Decision Symbol: Depicts a decision point with alternative paths.
+• Input/Output Symbol: Represents input or output operations.
+• Connector Symbol: Connects different parts of the flowchart.
+13/24
+Symbols
+Symbol
+Name
+Function of the Symbol
+Start/End
+Start/End
+Indicates the start or end of the process.
+Input/Output
+Input/Output
+Represents input or output operations.
+Process
+Process
+Represents an action or operation.
+Decision
+Decision
+Depicts a decision point with alternative
+paths.
+14/24
+Flowchart: Sum of Two Numbers
+Let’s create a flowchart to represent the algorithm that calculates the sum of two
+numbers input by the user.
+Start
+Input x and y
+Sum = x + y
+Output Sum
+Stop
+15/24
+Example 2: Determining the Largest Number Among Two Integers
+Start
+Input x and y
+x > y
+max = x
+max = y
+Output max
+Stop
+yes
+no
+16/24
+Loops
+Introduction to Loops in Programming
+Loops are a fundamental concept in programming, and they play a crucial role in
+automating repetitive tasks. Consider the following scenarios:
+• Printing numbers from 1 to 10.
+• Processing each item in a list.
+• Repeating an action until a specific condition is met.
+Loops allow us to efficiently address these situations, making our code more
+powerful and flexible.
+17/24
+Syntax of Loops
+Loops in programming consist of three main parts:
+1. Initialization: Setting up initial values or conditions.
+2. Condition: Defining the condition that must be true for the loop to continue.
+3. Iteration: Specifying how the loop variable changes with each iteration.
+Example of a basic loop structure:
+<Start loop with termination condition>
+// Loop body: Code to be executed repeatedly
+<End loop>
+<Start loop>
+// Loop body: Code to be executed repeatedly
+<End loop with termination condition>
+18/24
+Types of Loops
+In programming, there are three common types of loops:
+• For loop: Used for a predetermined number of iterations.
+• While loop: Continues as long as a specified condition is true.
+• Do-while loop: Similar to a while loop but guaranteed to execute at least once.
+Each type of loop has its own use cases and advantages, depending on the situation
+you are addressing in your code.
+19/24
+For Loop Example
+The basic syntax of For loop.
+Syntax
+For <temp_variable> <- <starting_value> to <ending_value> do
+// Loop body: Code to be executed repeatedly
+EndFor;
+Let’s take a look at a simple example of a for loop. We want to print numbers
+from 1 to 5.
+For i <- 1 to 5
+do
+Write(i);
+EndFor;
+20/24
+While Loop Example
+Syntax
+While <condition_is_true> do
+// Loop body: Code to be executed repeatedly
+EndWhile;
+Let’s explore an example of a while loop. We want to count from 1 to 5 using
+a while loop.
+int i <- 1;
+while (i <= 5) do
+Write(i);
+i++;
+end While;
+21/24
+Do-While Loop Example
+The do-while loop guarantees that the loop body executes at least once, and then it
+continues while the specified condition is true.
+Syntax
+do
+// Loop body: Code to be executed repeatedly
+While(<condition_is_true>);
+Let’s dive into an example of a do-while loop. In this example, we will print numbers
+from 1 to 5 using a do-while loop.
+int i <- 1;
+do
+Write(i);
+i++;
+while (i <= 5);
+22/24
+Exercise
+Write an algorithm that displays all even numbers from 1 to 20.
+23/24
+Exercise
+Write an algorithm that displays all even numbers from 1 to 20.
+Algorithm Print_Even_Numbers;
+Var number: integer;
+Begin
+For number <- 1 to 20 Do
+If number % 2 == 0 Then
+Write(number);
+End If;
+End For;
+End;
+23/24
+Flowchart of a loop statement
+Init
+Cond?
+Loop
+Incr
+End
+no
+Yes
+24/24
+
+================================================================================
+FILE: Week3.pdf
+================================================================================
+Lecture Notes :
+Algorithms
+3rd week: Static Arrays
+Academic year : 2023-2024.
+1st Year Mathematics License,
+Faculty of Mathematics,
+University of Science and Technology Houari Boumediene.
+Content :
+• Brief recap.
+• 1st Class: Working with 1D Arrays.
+• 2nd Class: Working with 2D Arrays.
+1/32
+Working with 1D Arrays
+Is one cell enough?
+• Maybe! Let’s write an algorithm to input the grades of all 450 students enrolled in
+Mathematics and then calculate the overall average.
+Algorithm ClassAverage;
+Var sum, i : integer;
+average, grade : float;
+Const nbStudents = 450;
+Begin
+sum <- 0;
+For i <-0 to nbStudents do
+Write("Enter the grade value: ");
+Read(grade);
+sum <- sum + grade;
+EndFor;
+average <- sum/nbStudents;
+Write("The overall average of the Math class is: ", average);
+End;
+2/32
+Is one cell enough?
+• We lost all the grades! what if we had to find grades that are less than 10? or find the
+best student in this math class?
+Algorithm ClassAverage;
+Var g1, g2, g3, ..., g450 : integer;
+average, grade : float;
+Begin
+read(g1);
+read(g2);
+read(g3);
+...
+read(g450);
+average <- (g1+g2+g3+...+g450)/nbStudents;
+Write("The overall average of the Math class is: ", average);
+End;
+3/32
+Isn’t there a simpler, more elegant way to write this?
+• One can imagine a simple data structure, that groups the cells g1, g2, ..., g450.
+• This structure is present in all programming languages.
+• usually under the name array.
+g1
+g2
+g3
+...
+g450
+−→
+g
+g[1]
+g[2]
+g[3]
+...
+g[450]
+4/32
+What is an Array?
+Definition
+• A set of values bearing the same variable name and type, and identified
+by a number is called an array.
+• The number used to identify each value in an array is called the index
+• Each element of an array is designated by the name of the array, followed
+by followed by the element index, enclosed in square brackets.
+42
+g[0]
+17
+g[1]
+8
+g[2]
+30
+g[3]
+55
+g[4]
+Indices
+Values
+5/32
+Properties of an Array
+• The number of elements in an array is called its size.
+• The dimension of an array is the number of its indices.
+Example
+A :
+A[1]
+A[2]
+. . .
+A[100]
+• The variable name is A.
+• The size of A is : 100 (the number of elements).
+• Its dimension is : 1 (the number of indices).
+6/32
+Array Declaration
+Syntax
+var <array_ID>[<size>] : <type>;
+Example
+A :
+A[1]
+A[2]
+. . .
+A[100]
+• The variable name is A.
+• The size of A is : 100 (the number of elements).
+• Its dimension is : 1 (the number of indices).
+• var A[100] :
+Integer;
+• var A[100] :
+float;
+7/32
+Useful Algorithms: Filling an Array
+We can assign a value to an array element using its index : <array_ID> ←<value>;
+Example: A[2] ←5;
+A :
+5
+. . .
+Algorithm Assignment_Array;
+Var A[100], i : integer;
+Begin
+For i <- 1 to 100 do
+A[i] <- 5;
+EndFor;
+End;
+A :
+5
+5
+. . .
+5
+8/32
+Useful Algorithms: Filling an Array
+We can assign a value to an array element using its index : <array_ID> ←<value>;
+We can fill an array with user input values using I/Ö operations :
+Algorithm Fill_Array;
+Var A[100], i, inter : integer;
+Begin
+For i <- 1 to 100 do
+Write("Enter the ", i ,"th value ");
+Read(inter);
+A[i] <- inter;
+EndFor;
+End;
+9/32
+Useful Algorithms: Filling an Array
+We can assign a value to an array element using its index : <array_ID> ←<value>;
+We can fill an array with user input values using I/Ö operations :
+Algorithm Fill_Array;
+Var A[100], i : integer;
+Begin
+For i <- 1 to 100 do
+Write("Enter the ", i ,"th value ");
+Read(A[i]); // Input value directly to array A
+EndFor;
+End;
+10/32
+Back to Students Example
+Algorithm ClassAverage;
+Var i : integer ;
+grade[450], average, sum : float ;
+Begin
+For i <- 0 to 450 do
+Write("Enter the grade value: ");
+Read(grade[i]);
+EndFor;
+For i <- 0 to 450 do
+sum <- sum + grade[i];
+EndFor;
+average <- sum/450;
+Write("The overall average of the Math class is: ", average);
+End;
+11/32
+Back to Students Example
+Minimal Algorithm (optimal)
+Algorithm ClassAverage;
+Var i : integer ;
+grade[450], average : float ;
+Begin
+For i <- 0 to 450 do
+Write("Enter the grade of student ", i);
+Read(grade[i]);
+average <- average + grade[i]/450;
+EndFor;
+Write("The overall average of the Math class is: ", average);
+End;
+12/32
+Example: Sequence
+Let (Un) be a sequence, where Un = 7√n −2n2. Write an algorithm that calculates the first
+10 elements of (Un), and store them into an array named U.
+Algorithm Sequence_Example;
+Var i : integer ;
+U[10] : float ;
+Begin
+For i <- 0 to 10 do
+U[i] <- 7*sqrt(i)-2*n**2;
+EndFor;
+For i <- 0 to 10 do
+write("The ", i, " th element of the sequence U is ", U[i]);
+EndFor;
+End;
+13/32
+Example: Fibonacci Sequence
+Let (Fn) be a sequence, where Fn+1 = Fn + Fn−1, and F1 = F2 = 1. Write an algorithm
+that calculates and store the first 10 elements of (Fn).
+Algorithm Fibonacci_Sequence;
+Var i : integer ;
+F[10] : float ;
+Begin
+F[1] <- 1; F[2] <- 1;
+For i <- 2 to 9 do
+F[i+1] <- F[i] + F[i-1];
+EndFor;
+For i <- 0 to 10 do
+write("F[", i, "] = ", F[i]);
+EndFor;
+End;
+14/32
+Useful Algorithms: Find the Maximum Value
+Let T be an integer array of size 100. Write an algorithm that finds the maximum value in T.
+Algorithm Find_Max;
+Var i, T[100], max: integer ;
+Begin
+// fill the array T
+max <- F[1];
+For i <- 2 to 100 do
+If (max < F[i]) then
+max <- F[i];
+EndIf;
+EndFor;
+write("The maximum value is ", max);
+End;
+15/32
+Useful Algorithms: Inverse Array
+Let T be an integer array of size 100. Write an algorithm the order of elements in T.
+Algorithm Inverse_Array;
+Var i, j, inter, T[100]: integer ;
+Begin
+// fill the array T
+i <- 1;
+j <- 100;
+While (i<j) do
+inter <- T[j];
+T[j] <- T[i];
+T[i] <- inter;
+i <- i+1;
+j <- j-1;
+EndWhile;
+End;
+16/32
+Useful Algorithms: Inverse Array
+Let T be an integer array of size 100. Write an algorithm that inverses the order of elements
+in T.
+Algorithm Inverse_Array;
+Var i, inter, T[100], n: integer ;
+Begin
+// fill the array T
+i <- 1;
+n <- 100;
+While (i<n) do
+inter <- T[n-i+1];
+T[n-i+1] <- T[i];
+T[i] <- inter;
+i <- i+1;
+EndWhile;
+End;
+17/32
+Example: Separates Even and Odd Values in T into Two Arrays T1 and T2
+Algorithm Odd_Even_Arrays;
+Var i, j, k, T[100], T1[100], T2[100]: integer ;
+Begin
+// fill the array T
+j <- 1;
+k <- 1;
+For i <- 1 to 100 do
+If (T[i]%2 = 0) then
+T1[j] <- T[i];
+j <- j+1;
+Else
+T2[k] <- T[i];
+k <- k+1;
+EndIf;
+EndFor;
+End;
+18/32
+Useful Algorithms: Search Element in Array
+Let T be an integer array of size 100. Write an algorithm that prints the index of an input
+value V.
+Algorithm Search_Array;
+Var i, index, T[100]: integer ;
+f : boolean;
+Begin
+// fill the array T
+i <- 1;
+f <- false;
+write("Enter a value");
+read(V);
+do
+If(T[i] = V) Then
+b <- true;
+index <- i;
+EndIf
+i <- i+1;
+while(f=true)
+write(V, " is at index", index);
+End;
+19/32
+Useful Algorithms: Count Occurrence in Array
+Let T be an integer array of size 100. Write an algorithm that prints the number of
+occurrence of an input value V.
+Algorithm Count_Occ_Array;
+Var i, counter, T[100]: integer ;
+Begin
+counter <- 0;// and fill the array T
+write("Enter a value");
+read(V);
+For i <- 1 to 100 do
+If (T[i]=V) then
+counter <- counter +1;
+EndIf;
+EndFor
+write("Nb occurrence of ", v, " is ", counter);
+End;
+20/32
+Special case of Arrays : String
+In algorithms, a string is an array of characters. It’s a data structure that holds a
+sequence of individual characters, such as letters, digits, or symbols.
+The string "Hello" can be represented as an array: [’H’, ’e’, ’l’, ’l’, ’o’].
+• The symbol " is used to delimit a string of characters.
+• The string "Baobab" is composed of the characters ’B’, ’a’, ’o’, ’b’, ’a’, and ’b’.
+• The string "123" consists only of digits, but it should never be confused with the
+numerical value 123.
+• The string "" represents an empty string.
+• The string " " is a string containing only one character, which is the space character
+(not to be confused with an empty string).
+21/32
+ASCII Code
+ASCII (American Standard Code for Information Interchange) is a character encoding
+standard used in computers and communication equipment.
+It represents text and control characters as numerical values, which are widely
+used to encode characters in digital communication.
+ASCII uses 7 or 8 bits to represent characters, with 128 standard characters in
+the 7-bit version and 256 characters in the 8-bit version (extended ASCII).
+• Character: A →ASCII Value: 65.
+• Character: 3 →ASCII Value: 51.
+22/32
+ASCII Code Table
+0
+NUL
+16
+DLE
+32
+48
+0
+64
+@
+80
+P
+96
+’
+112
+p
+1
+SOH
+17
+DC1
+33
+!
+49
+1
+65
+A
+81
+Q
+97
+a
+113
+q
+2
+STX
+18
+DC2
+34
+"
+50
+2
+66
+B
+82
+R
+98
+b
+114
+r
+3
+ETX
+19
+DC3
+35
+#
+51
+3
+67
+C
+83
+S
+99
+c
+115
+s
+4
+EOT
+20
+DC4
+36
+$
+52
+4
+68
+D
+84
+T
+100
+d
+116
+t
+5
+ENQ
+21
+NAK
+37
+%
+53
+5
+69
+E
+85
+U
+101
+e
+117
+u
+6
+ACK
+22
+SYN
+38
+&
+54
+6
+70
+F
+86
+V
+102
+f
+118
+v
+7
+BEL
+23
+ETB
+39
+’
+55
+7
+71
+G
+87
+W
+103
+g
+119
+w
+8
+BS
+24
+CAN
+40
+(
+56
+8
+72
+H
+88
+X
+104
+h
+120
+x
+9
+HT
+25
+EM
+41
+)
+57
+9
+73
+I
+89
+Y
+105
+i
+121
+y
+10
+LF
+26
+SUB
+42
+*
+58
+:
+74
+J
+90
+Z
+106
+j
+122
+z
+11
+VT
+27
+ESC
+43
++
+59
+;
+75
+K
+91
+[
+107
+k
+123
+{
+12
+FF
+28
+FS
+44
+,
+60
+<
+76
+L
+92
+\
+108
+l
+124
+|
+13
+CR
+29
+GS
+45
+-
+61
+=
+77
+M
+93
+]
+109
+m
+125
+}
+14
+SO
+30
+RS
+46
+.
+62
+>
+78
+N
+94
+∧
+110
+n
+126
+∼
+15
+SI
+31
+US
+47
+/
+63
+?
+79
+O
+95
+_
+111
+o
+127
+DEL
+23/32
+Comparing String
+In algorithms, strings are often compared character by character using their ASCII
+codes.
+• Each character in a string is represented by a numeric ASCII code, which allows for
+lexicographic comparison.
+• Smaller ASCII code values indicate earlier positions in the ordering.
+Example
+• Compare "apple" and "banana."
+• Compare characters one by one:
+’a’ (97) < ’b’ (98), hence, "apple" is lexicographically smaller than "banana."
+• This is how many algorithms sort and compare strings.
+24/32
+Example : Is It a Palindromes?
+Let S be a string (an array of characters) of size 7. Write an algorithm that checks if S is a
+palindrome. A Palindrome is a word or a phrase that reads the same forwards and backward.
+Ex., "racecar".
+Algorithm Palinfrome;
+Var i : integer ;
+S[7] : Character;
+V : boolean;
+Begin
+i <- 1;
+b <- true;
+write("Enter a string");
+\\ Type a word of 7 letters max
+n <- 7;
+read(S);
+repeat
+If (S[i] != S[n-i+1]) then
+b = false;
+EndIf;
+i <- i+1;
+Until (b = false or i >= n/2)
+If(b=true) then
+write("It’s a Palyndome");
+EndIf;
+End;
+25/32
+Working with 2D Arrays
+2D Arrays (Matrix) : Structure
+Two-dimensional arrays generally take the form of a set of rows and columns
+(matrix). Consequently, each element is identified by two indices.
+The following structure is a two dimensional array for size n×m.
+M :
+M[1][1]
+M[1][2]
+. . .
+M[1][m]
+M[2][1]
+M[2][2]
+. . .
+M[2][m]
+...
+...
+...
+M[n][1]
+. . .
+. . .
+M[n][m]
+26/32
+2D Arrays (Matrix) : Declaration
+Syntax
+Var <array_ID>[<nb_lines>][<nb_columns>] :
+<type>;
+Let M be a two dimensional array for size 2×3.
+M :
+M[1][1]
+M[1][2]
+M[1][3]
+M[2][1]
+M[2][2]
+M[2][3]
+Declaration : Var M[2][3] :
+integer;
+• The number of indices is : 2 (dimension).
+• The size of a two dimensional matrix is the product of the number of columns times the
+number of lines.
+27/32
+2D Arrays (Matrix) : Utility
+• The utility of a two-dimensional array lies in the ability to declare a single array
+instead of declaring multiple identical arrays.
+Example
+In fact, a 2D array ca, be equivalent to 10 separate 1D arrays, each with 20 elements.
+In other words, the declaration:
+Notes[10][20] :
+float;
+Replaces this:
+Notes1[20], Notes2[20], ..., Notes10[20] :
+float;
+28/32
+Useful Algorithms: Filling a 2D Array
+We can fill an array with user input values using I/Ö operations :
+Algorithm Fill_Array;
+Var A[100][50], i, j : integer;
+Begin
+For i <- 1 to 100 do
+For j <- 1 to 50 do
+Write("Enter a value ");
+Read(A[i][j]); // Input value directly to array A
+EndFor;
+EndFor;
+End;
+29/32
+Useful Algorithms: max/min value in a 2D Array
+Let M be a 20 by 50 matrix, write an Algorithm that prints the minimum value in M.
+Algorithm Fill_Array;
+Var A[20][50], i, j, min : integer;
+Begin // fill the matrix
+min <- A[1][1];
+For i <- 1 to 20 do
+For j <- 1 to 50 do
+If(min > A[i][j]) then
+min <- A[i][j];
+EndIf;
+EndFor;
+EndFor;
+write("The minimum value in M is : ", min);
+End;
+30/32
+Useful Algorithms: max/min value in a 2D Array in each row
+Let M be a 20 by 50 matrix, write an Algorithm that prints the minimum value in each row
+of M and store them in an array T.
+Algorithm Fill_Array;
+Var A[20][50], i, j, min, T[20] : integer;
+Begin // fill the matrix
+For i <- 1 to 20 do
+min <- A[i][1];
+For j <- 1 to 50 do
+If(min > A[i][j]) then
+min <- A[i][j];
+EndIf;
+T[i] <- min;
+EndFor;
+EndFor;
+write("The minimum value in M is : ", min);
+End;
+31/32
+Useful Algorithms: max/min value in a 2D Array in each column
+Let M be a 20 by 50 matrix, write an Algorithm that prints the minimum value in each row
+of M and store them in an array T.
+Algorithm Fill_Array;
+Var A[20][50], i, j, min, T[50] : integer;
+Begin // fill the matrix
+For j <- 1 to 50 do
+min <- A[1][j];
+For i <- 1 to 20 do
+If(min > A[i][j]) then
+min <- A[i][j];
+EndIf;
+T[j] <- min;
+EndFor;
+EndFor;
+write("The minimum value in M is : ", min);
+End;
+32/32
+
+================================================================================
+FILE: Algorithmics_Week1_Course.pdf
+================================================================================
+Lecture Notes :
+Algorithms
+1st week: Introduction to Algorithms and Programming
+Academic year : 2023-2024.
+1st Year Mathematics License,
+Faculty of Mathematics,
+University of Science and Technology Houari Boumediene.
+Content :
+• Overview of the lecture’s goals and syllabus.
+• 1st Class: Understanding the concept of Algorithms and Programs.
+• 2nd Class: Pseudocode sketching and Input/Output Operations
+1/40
+Making a Cup of Tea
+• Let’s make a cup of tea :
+1. Gather Your Supplies.
+2. Boil Water.
+3. Prepare the Teacup.
+4. Pour Hot Water.
+5. Steep the Tea.
+6. Remove the Tea Bag.
+• An algorithm can be compared to a cooking recipe.
+• Roughly, an algorithm is a complete, detailed description of the actions to be
+performed and their order to achieve a given result.
+2/40
+Historical Milestones
+3/40
+Algorithms are useful!
+Algorithm = Solving Method
+• An algorithm is used to transmit know-how, skill, etc.
+• It describes the steps to follow to complete a job.
+• The user of an algorithm simply has to follow the instructions, in the right
+order, to get a solution to a given problem.
+Algorithmics = Study and Analysis of Algorithms
+4/40
+What is an Algorithm?
+→The word Algorithm comes from the Latinized name of the Persian
+mathematician Al-Khawarizmi.
+→Algorithms are the basis of all computer programming.
+Definition of an Algorithm
+An algorithm is
+• a finite sequence of well-defined,
+• unambiguous,
+• and executable steps or instructions,
+that solve a particular problem.
+→It provides a systematic approach to problem-solving by breaking down complex
+tasks into simpler, discrete operations that can be carried out methodically.
+5/40
+What is an Algorithm?
+→Informally, an algorithm is any well-defined computational procedure that takes
+some value, or set of values, as input and produces some value, or set of values, as
+output in a finite amount of time.
+An algorithm is thus a sequence of computational steps that transform the
+input into the output.
+Example
+suppose that you need to sort a sequence of numbers into monotonically
+increasing order.
+Input: A sequence of n numbers a1, a2, . . . , an.
+Output: A permutation (reordering) a′
+1, a′
+2, . . . , a′
+n of the input sequence such
+that a′
+1 ≤a′
+2 ≤· · · ≤a′
+n.
+6/40
+Properties of Algorithms
+An algorithm must:
+• have a finite number of steps,
+• terminate after a finite number of operations,
+• provide a result.
+• sequences (steps) follow one another in a certain order.
+• Each step must be rigorously and unambiguously defined.
+• An algorithm has a beginning and an end.
+7/40
+Manifestation of Algorithms
+• Human-Human communication :
+• Natural language description : Set of instruction written in human language.
+• Flowcharts : Graphical representation using forms and symbols.
+• Pseudocode:
+uses a combination of natural language and simplified
+programming-like constructs that can be extremely detailed.
+• Human-Machine communication :
+• Computer programs, also called codes.
+8/40
+From Algorithms to Programs
+Code/Program = Algorithm translated to a "computer
+language"
+→Coding/programming : writing algorithms that are "understandable" by
+computers using a Programming Language.
+A program is an implementation of an algorithm using a specific
+programming language. It is a set of instructions written in code that can
+be executed by a computer to carry out a task or solve a problem.
+9/40
+From Algorithms to Programs
+Programming is the process of writing code to instruct a computer to perform
+a task.
+It involves:
+• Writing code in a predefined syntax rules, called a programming language.
+• Debugging and testing code.
+• Running/executing programs.
+Syntax are rules and symbols used to express instructions.
+10/40
+General Structure of an Algorithm
+An algorithm consists of two parts:
+• Declarative part: also called the algorithm header, it generally contains
+declarations related to the needed memory space.
+• Body part of the algorithm: consisting of a sequence of instructions
+calling for operations to be executed.
+Syntax
+Algorithm Name_of_algorithm ;
+< List of variables and/or constantes > ;
+Begin
+< Sequence of instructions > ;
+End
+11/40
+Units of Measurement : A Memory Cell
+Memory Cells: Computer memory consists of numerous memory cells, each
+capable of storing a single basic information.
+→These cells are typically grouped into storage units:
+• A bit (binary digit) is a binary element. Its value is either 0 or 1.
+• A byte is a set of 8 bits. Commonly used lengths are sets of 16, 32 or 64 bits.
+• A kilobyte (abbreviation: KB) corresponds to 1024 bits, or 210 bits.
+• One megabyte (MB) corresponds to 1024 KB, or 210 KB.
+• A gigabyte (GB) is 1024 MB, or 210 MB.
+• These units of measurement are frequently used to indicate memory sizes (or
+capacities).
+12/40
+Binary representation: Overview
+The value of a binary number is calculated as the sum of each digit (0 or 1)
+multiplied by 2 raised to the power of its position from right to left.
+Example
+In the binary number 1101:
+Decimal
+23
+22
+21
+20
+13
+1
+1
+0
+1
+Binary
+That is,
+1 · 23 + 1 · 22 + 0 · 21 + 1 · 20 = 8 + 4 + 0 + 1 = 13 in decimal.
+13/40
+Binary representation: Overview
+Let bn, bn−1, . . . , b2, b1, b0 be a binary number with n + 1 digits (from left to right),
+where each bi can be either 0 or 1. The decimal equivalent of this binary number is
+calculated as:
+D =
+n
+X
+i=0
+bi · 2n−i.
+• D represents the decimal equivalent. n is the highest power of 2 in the binary
+number (i.e., the number of digits minus one).
+You can use this formula to convert any binary number into its decimal
+representation.
+n bit can represent integers up to 2n −1.
+Example: with 8 bits (a byte), one can represent values from 0 to 255 (28 −1).
+14/40
+Data Storage in programming
+In programming, memory addresses are represented by names. The programmer
+doesn’t know the address of a cell, but rather its name. So there are two ways of
+looking at the computer’s main memory: from the programmer’s side and from the
+computer’s side.
+Computer side
+Programmer side
+Address
+Word
+Name
+11010010
+8
+a
+11010011
+2
+f
+11010100
+6
+average
+...
+...
+...
+15/40
+ASCII Code
+• ASCII (American Standard Code for Information Interchange) is a character
+encoding standard used in computers and communication equipment.
+• It represents text and control characters as numerical values, which are widely
+used to encode characters in digital communication.
+• ASCII uses 7 or 8 bits to represent characters, with 128 standard characters in
+the 7-bit version and 256 characters in the 8-bit version (extended ASCII).
+• Character: A →ASCII Value: 65.
+• Character: 3 →ASCII Value: 51.
+16/40
+Variables and Constants
+• A variable is a memory cell designed to hold values (numbers, characters, etc.).
+It has a name, a type and a content that can be modified during
+algorithm execution. The keyword is: Var
+• The definition of a constant is the same as that of a variable, with the difference
+that its value remains unchanged throughout the execution of the algorithm.
+The keyword is: Const
+Syntax
+Var <variable_ID> : <type> ;
+Const <constant_ID> = <value> ;
+17/40
+ID choice
+!
+Remark:
+The choice of variable names is subject to a few rules:
+• A name must begin with an alphabetical letter.
+• Must be different from reserved words (e.g.: integer, float, else,
+switch, case, for, return, etc.)
+Examples
+→Valid exampled: A1, pi, alpha, x, y.
+→invalid examples: 1A, for, end, 11.
+For readability, choose meaningful names that describe the data being manipulated.
+18/40
+Variables and Constants
+• An identifier <variable_ID> and <constant_ID>: is a name assigned to
+the variable or constant, which can be made up of letters and numbers
+but without spaces.
+• A type: defines the nature and size of the variable.
+Example
+Var a, b : Integer;
+Const
+pi = 3.14;
+In this example, we have declared :
+• Two variables a and b of integer type, described in the next subsection.
+• A constant pi equal to the value 3.14 as an example
+19/40
+Integer Type
+• This is a numeric type representing the set of relative integers, such as:
+−9, 0, 31, . . . etc.
+• The operations allowed on this type are: +, - , *, div (integer division) and
+mod (modulo or remainder remainder of integer division).
+• The keyword is: integer.
+Example
+Var x :
+integer;
+20/40
+float Type
+• This is a numeric type representing the set of float numbers, such as
+0.25, −1.33, 2.5e + 10, . . . etc.
+• The keyword is: float.
+Example
+Var y :
+float;
+21/40
+Character Type
+• This type represents all alphanumeric characters, such as ’a’, ’A’, ’3’, ’%’, space,
+etc.
+• Operations supported by this type: =, , <, <=, >, >=.
+• The keyword is: character.
+Example
+Var a :
+character;
+22/40
+Boolean Type
+• This type is used in logic to represent two values: true and false.
+• The operations supported are: NOT, AND, OR.
+• The keyword is: boolean.
+Example
+Var b :
+boolean;
+23/40
+Declarations Examples
+Var x, y : integer;
+z, w : float;
+letter : character;
+name : string;
+Status: boolean;
+Const n = 100;
+arobase = ’@’;
+word = "hello";
+24/40
+Assignment
+• Assignment is the most basic instruction used in an algorithm.
+• Assignment consists in setting a value to a variable.
+• In other words, filling or modifying the contents of a memory cell.
+• In pseudocode, the assignment is noted with the sign ←.
+Syntax
+<variable_ID> ←<value>;
+Example
+x ←8;
+25/40
+Assignment : Example 1
+Example
+Algorithm Assignment_Example ;
+Var x, y :
+integer ;
+Begin
+x ←2 ;
+y ←5 ;
+End ;
+This algorithm stores the values 2 and 5 in the variables x and y:
+x
+2
+y 5
+26/40
+Assignment : Example 2
+Example
+Algorithm Assignment_Example ;
+Var x, y :
+integer ;
+Begin
+x ←2 ;
+x ←1 + 2 ;
+y ←x ;
+y ←x + 2 ;
+y ←x + y ;
+End ;
+27/40
+Exercise : permutation of two variables
+Write an algorithm that permutes the values of two variables.
+Algorithm Permutation ;
+Var x, y, i :
+integer ;
+Begin
+x
+y
+i
+x ←2 ;
+-
+-
+-
+-
+-
+2
+x ←8 ;
+-
+-
+-
+-
+-
+2
+8
+i ←y ;
+-
+-
+-
+-
+-
+2
+8
+8
+y ←x ;
+-
+-
+-
+-
+-
+2
+2
+8
+x ←i ;
+-
+-
+-
+-
+-
+8
+2
+8
+End ;
+28/40
+Exercise : permutation of two variables
+Write an algorithm that permutes the values of two variables without an
+intermediate variable.
+Algorithm Permutation ;
+Var x, y:
+integer ;
+Begin
+x
+y
+x ←2;
+-
+-
+-
+-
+-
+2
+x ←8;
+-
+-
+-
+-
+-
+2
+8
+x ←x + y ;
+-
+-
+-
+-
+-
+10
+8
+y ←x - y ;
+-
+-
+-
+-
+-
+10
+2
+x ←x - y ;
+-
+-
+-
+-
+-
+8
+2
+End ;
+29/40
+Arithmetic Operations
+• Arithmetic operations are fundamental mathematical calculations used in
+everyday life and programming.
+• Let’s explore various operations: Addition, Subtraction, Multiplication,
+Division, Modulo, Integer Division, and Exponentiation.
+Operation
+Symbol
+Addition
++
+Subtraction
+−
+Multiplication
+∗
+Division
+/
+Modulo
+% or mod
+Integer Division
+div
+Exponentiation
+ˆ or ∗∗
+30/40
+Arithmetic Operations
+Using the assignment and the arithmetic operations, we can calculate:
+Syntax
+Addition:
+Result ←A + B
+A + B
+Subtraction:
+Result ←X −Y
+X −Y
+Multiplication:
+Result ←M ∗N
+M × N
+Division:
+Result ←P/Q
+P
+Q
+Modulo:
+Result ←D mod E
+result ≡D[E]
+Integer Division:
+Result ←Z div W
+Exponentiation:
+Result ←R ∗∗S
+RS
+31/40
+Relational Operations
+Common Relational Operations and Symbols
+• Greater Than (>): It’s true if the left value is greater than the right
+value.
+• Less Than (<): It’s true if the left value is less than the right value.
+• Greater Than or Equal To (>=): It’s true if the left value is greater
+than or equal to the right value.
+• Less Than or Equal To (<=): It’s true if the left value is less than or
+equal to the right value.
+• Equal To (=): It’s true if the left value is equal to the right value.
+• Not Equal To (! =): It’s true if the left value is not equal to the right
+value.
+32/40
+Logical Operations
+• Logical operations are used to manipulate Boolean values (true or false) in
+programming.
+• Let’s explore some basic logical operations:
+Common Relational Operations and Symbols
+AND (&) :
+Result ←A&B
+(true if both A and B are true)
+OR (|) :
+Result ←X|Y
+(true if either X or Y is true)
+NOR :
+Result ←NOR(P, Q)
+(true if neither P nor Q is true)
+NAND :
+Result ←NAND(D, E)
+(true unless both D and E are true)
+NOT (!)
+:
+Result ←!Z
+(inverts the value of Z)
+33/40
+Operator Precedence Order
+For Arithmetic and Concatenation Operators:
+1. Parentheses
+2. Exponentiation
+3. Multiplication (x) and Division (/)
+4. Modulus (mod)
+5. Addition (+) and Subtraction (-)
+For Logical Operators:
+1. NOT (non)
+2. AND (et)
+3. OR (ou)
+34/40
+Input/Output Operations
+• Input and output operations are essential in algorithms for processing data.
+• They allow an algorithm to communicate with the external world.
+• Input operations involve receiving data from external sources, such as the user.
+• Output operations involve sending results or information to external destinations,
+like displays or files.
+Input
+Algorithm
+Output
+35/40
+Input Instruction
+• It allows you to read input values and assign them to variables stored in
+memory.
+• The values assigned are often data entered from an input device such as the
+keyboard. Syntax:
+Syntax
+Read(<var1_ID>, <var2_ID>, ...);
+• Read(x): reads and stores a given value in the memory location
+associated with x.
+• Read(x, y): reads and stores two values, the first in x and the second
+in y.
+36/40
+Output Instruction in Algorithms
+It allows the algorithm to write the output data resulting from a processing
+(value, text, etc.) by displaying them, for example, on an output device such as
+the screen.
+Syntax:
+Write(<var1_ID>, <var2_ID>, <expr1>, <expr2>, ...);
+!
+Remark:
+In the case of writing an expression, it is the result of the evaluation of that
+expression that is displayed, not the expression itself.
+Example
+Let’s consider two variables, x and y, such that x = 5 and y = 7.
+The
+instruction: Write(x+y); Displays the result of adding x and y (which is 12).
+37/40
+Example IO Operations
+Algorithm Average_of_two_floats;
+Var x, y, z: float;
+Begin
+Write ("Enter the first value: ");
+Read (x);
+Write ("Enter the second value: ");
+Read (y);
+z <- (x + y) / 2;
+Write ("The average is: ", z);
+// Alternatively, you can use a single line:
+Write ("The average is: ", (x + y) / 2);
+// In this case, you don’t need z
+End;
+38/40
+Example IO Operations
+Write an algorithm that calculates the area of a circle using the formula: Area =
+Radius * Radius * Pi.
+Algorithm Circle_Area;
+Const Pi = 3.14;
+Var Radius: integer;
+Area: float;
+Begin
+Write("Enter the radius value: ");
+Read(Radius);
+Area <- Radius * Radius * Pi;
+Write("The area of the circle is: ", Area);
+End;
+39/40
+40/40
+
+================================================================================
+FILE: Week4.pdf
+================================================================================
+Lecture Notes :
+Algorithms and Data Structures I
+Special Algorithms for Static Arrays
+Academic year : 2025-2026.
+1st Year Mathematics License,
+Faculty of Mathematics,
+University of Science and Technology Houari Boumediene.
+Content :
+• Brief recap.
+• Introduction to sorting algorithms.
+• Overview of common sorting algorithms.
+• Binary search algorithm.
+1/16
+Sorting Problem
+Sorting Arrays
+• Arrays allow you to store multiple elements of the same type within a single
+entity. When the type of these elements has an order, you can arrange them in
+ascending or descending order.
+• Sorting an array means arranging the elements of an array in ascending or
+descending order.
+Suppose that you need to sort a sequence of numbers into monotonically increasing
+or decreasing order.
+Input: An array of n numbers [a1, a2, . . . , an].
+Output: A permutation (reordering) a′
+1, a′
+2, . . . , a′
+n of the input sequence such that
+a′
+1 ≤a′
+2 ≤· · · ≤a′
+n.
+5
+2
+8
+1
+→
+1
+2
+5
+8
+2/16
+Let’s try!
+Let T be an array of 5 elements, containing strictly positive integers.
+Algorithm Sort_array;
+Var i, p, min, T[5], ST[5]: integer ;
+Begin \\ T must be filled first
+min <- T[1];
+For i <- 1 to 5 do
+For j <- 1 to 5 do
+If(T[j] < min AND T[j] != -1)
+min <- T[j];
+p <- j;
+EndIf;
+EndFor;
+T[p] <- -1;
+ST[i] <- min;
+EndFor;
+End;
+3/16
+Selection Sort
+Selection Sort Algorithm
+Principle
+Selection Sort is a simple sorting algorithm.
+• It divides an array into two parts: sorted and unsorted.
+• It repeatedly selects the minimum element from the unsorted part and moves it
+to the sorted part.
+• This process continues until the entire array is sorted.
+In other words,
+• the minimum element in the array is searched for,
+• and then swapped with the element that is currently located at the first position,
+• Now the minimum element in the remaining unsorted array is searched for and put in
+the second position,
+• and so on.
+4/16
+Selection Sort Algorithm : Example, A = [7, 5, 4, 2]
+5/16
+Selection Sort Algorithm
+Algorithm Selection_Sort;
+Var i, j, min, p, T[5]: integer;
+Begin \\ T must be filled first
+For i <- 1 to 5 do
+min <- T[i];
+p <- i;
+For j <- i+1 to 5 do
+If(T[j] < min)
+min <- T[j];
+p <- j;
+EndIf;
+EndFor;
+T[p] <- T[i];
+T[i] <- min;
+EndFor;
+End;
+6/16
+Bubble Sort
+Bubble Sort Algorithm
+Bubble sort is based on the idea of repeatedly comparing pairs of adjacent elements and
+then swapping their positions if they exist in the wrong order.
+Principle
+The bubble sort algorithm consists in progressively moving up the largest elements of
+an array. Its principle is
+• to invert two successive elements if they are not sorted in the right order,
+• and to start again until no more elements can be swapped.
+Assume that A is an unsorted array of elements. This array needs to be sorted in ascending
+order.
+7/16
+Bubble Sort Algorithm : Example, A = [7, 4, 5, 2]
+8/16
+Bubble Sort Algorithm
+Algorithm Bubble_sort;
+Var i, j, n, temp, T[5]: integer;
+Begin \\ T must be filled first
+n <- 5;
+For i <- 1 to n-1 do
+For j <- 1 to n - i do
+If T[j] > T[j+1] Then
+temp <- T[j];
+T[j] <- T[j+1];
+T[j+1] <- temp;
+EndIf;
+EndFor;
+EndFor;
+End;
+9/16
+Dichotomy Search (Binary
+Search)
+Dichotomy Search
+Binary Search is a fast and efficient search algorithm.
+• It works on sorted arrays.
+• The key idea is to repeatedly divide the search interval in half.
+• Compare the middle element with the target value.
+• If the middle element is equal to the target, the search is successful.
+• If the target is less than the middle element, search the left half; otherwise,
+search the right half.
+• Continue this process until the target is found or the search interval is empty.
+Example. Let A = [2, 3, 8, 20] an array of 4 elements and V = 3 the target value.
+• The mid value in the array is A[2] = V = 3.
+A :
+2
+3
+8
+20
+1: left
+2
+3
+right →
+2
+3
+8
+20
+1: left
+2: mid
+3
+4: right
+10/16
+Dichotomy Search: Example
+Let A = [1, 3, 12, 14, 23, 34, 55, 65, 75, 78] an array of 10 Elements sorted in
+increasing order.
+• We want to find the index of value 75 in A.
+11/16
+Dichotomy Search: Example
+Iteration 1
+• The left index is 0,
+• The right index is 9,
+• The mid index is 4.
+We have A[mid] < V (A[4] = 23 and V = 75). Hence, the target value V is at the
+right half of the array. Hence,
+• left ←4,
+12/16
+Dichotomy Search: Example
+Iteration 2
+• The left index is 4,
+• The right index is 9,
+• The mid index is 7.
+We have A[mid] < V (A[7] = 65 and V = 75). Hence, the target value V is at the
+right half of the array. Hence,
+• left ←7,
+13/16
+Dichotomy Search: Example
+Iteration 3
+• The left index is 7,
+• The right index is 9,
+• The mid index is 8.
+We have A[mid] = V. Hence, the target value V is found!!!
+14/16
+Dichotomy Search: Mid value (Example)
+In the following table we search for the value V = 7 in an array, we can see the mid value
+changes, in four iterations, until the target value 7 is found.
+15/16
+Dichotomy Search (Binary Search)
+Algorithm Binary_search;
+Var left, right, target, middle, T[10], found: integer;
+Begin \\ T must be filled
+read(target);
+// The value to search for
+left <- 1; right <- 10;
+found <- -1;
+While left <= right do
+middle <- (left + right) div 2;
+If T[middle] = target Then
+found <- middle;
+ElseIf T[middle] < target Then
+left <- middle + 1;
+Else
+right <- middle - 1;
+EndIf;
+EndWhile;
+End;
+16/16
+
+================================================================================
+FILE: Dichotomy_Search__Binary_Search_.pdf
+================================================================================
+Binary Search Algorithm
+(Dichotomy Search Method)
+By Khaled Said
+January 24, 2026
+Binary Search Tutorial
+USTHB - L1 Mathematics
+Contents
+1
+Introduction to Binary Search
+4
+1.1
+Why Learn Binary Search? . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.2
+The Key Requirement
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.3
+Comparison: Linear Search vs Binary Search . . . . . . . . . . . . . . . . .
+4
+1.4
+Speed Comparison
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+2
+How Binary Search Works
+6
+2.1
+The Basic Idea
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+2.2
+The Three Pointers Method . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+3
+Binary Search Algorithm - Step by Step
+7
+3.1
+The Algorithm in Words . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7
+3.2
+Flowchart . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8
+4
+Complete Visual Example
+9
+4.1
+Initial State . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+4.2
+Step 1: First Iteration
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+4.3
+Step 2: Second Iteration . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10
+4.4
+Step 3: Third Iteration . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10
+5
+Summary Table of the Example
+11
+5.1
+Search Space Visualization . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11
+6
+The Binary Search Algorithm in Pseudocode
+12
+6.1
+Iterative Version (Using While Loop) . . . . . . . . . . . . . . . . . . . . .
+12
+6.2
+Complete Program with Input/Output . . . . . . . . . . . . . . . . . . . .
+13
+7
+Example: Element Not Found
+14
+7.1
+Step-by-Step Trace . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+7.2
+Visual Representation
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+8
+Important Concepts and Details
+15
+8.1
+Why Must the Array Be Sorted?
+. . . . . . . . . . . . . . . . . . . . . . .
+15
+8.2
+Calculating the Middle Index
+. . . . . . . . . . . . . . . . . . . . . . . . .
+15
+9
+Common Mistakes and How to Avoid Them
+16
+9.1
+Mistake 1: Using Array on Unsorted Data
+. . . . . . . . . . . . . . . . . .
+16
+9.2
+Mistake 2: Wrong Loop Condition . . . . . . . . . . . . . . . . . . . . . . .
+16
+9.3
+Mistake 3: Infinite Loop . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+9.4
+Mistake 4: Wrong Middle Calculation . . . . . . . . . . . . . . . . . . . . .
+17
+10 Practice Problems
+18
+10.1 Problem 1: Manual Trace
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+18
+10.2 Problem 2: Find Non-Existent Element . . . . . . . . . . . . . . . . . . . .
+18
+10.3 Problem 3: Edge Cases . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+18
+10.4 Problem 4: Code Completion
+. . . . . . . . . . . . . . . . . . . . . . . . .
+18
+Page 2
+Binary Search Tutorial
+USTHB - L1 Mathematics
+11 Comparison: Linear Search vs Binary Search
+20
+11.1 Visual Comparison . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+11.2 When to Use Each
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+12 Summary and Key Points
+21
+12.1 Memory Aid: The 3 Rules . . . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+13 Final Checklist
+22
+Page 3
+Binary Search Tutorial
+USTHB - L1 Mathematics
+1
+Introduction to Binary Search
+Definition
+Binary Search (also called Dichotomy Search) is an efficient algorithm for find-
+ing a target value within a sorted array.
+Main Idea: Instead of checking every element one by one, we repeatedly divide
+the search space in half, eliminating half of the remaining elements at each step.
+1.1
+Why Learn Binary Search?
+• Much faster than linear search for large arrays
+• Fundamental algorithm - appears everywhere in computer science
+• Real-world applications: dictionaries, phone books, databases, file systems
+• Foundation for more advanced algorithms
+• Common in exams and technical interviews
+1.2
+The Key Requirement
+Warning!
+CRITICAL REQUIREMENT: Binary search ONLY works on SORTED ar-
+rays!
+If the array is not sorted, you must sort it first, or use linear search instead.
+1.3
+Comparison: Linear Search vs Binary Search
+Linear Search
+1
+2
+3
+4
+5
+6
+7
+8
+Check each element one by one
+Binary Search
+1
+2
+3
+4
+5
+6
+7
+8
+Check middle
+Then half
+Then quarter
+Page 4
+Binary Search Tutorial
+USTHB - L1 Mathematics
+1.4
+Speed Comparison
+Array Size
+Linear Search
+Binary Search
+10 elements
+up to 10 checks
+up to 4 checks
+100 elements
+up to 100 checks
+up to 7 checks
+1,000 elements
+up to 1,000 checks
+up to 10 checks
+1,000,000 elements
+up to 1,000,000 checks
+up to 20 checks
+Page 5
+Binary Search Tutorial
+USTHB - L1 Mathematics
+2
+How Binary Search Works
+2.1
+The Basic Idea
+Imagine you’re looking for a word in a dictionary:
+1. Open the dictionary in the middle
+2. Is your word on this page?
+• If yes →Found it!
+• If your word comes before this page →search the left half
+• If your word comes after this page →search the right half
+3. Repeat this process on the chosen half
+4. Keep dividing until you find the word or run out of pages
+A-M
+N-Z
+Look here first!
+If word < middle
+If word > middle
+2.2
+The Three Pointers Method
+Binary search uses three pointers (indices):
+Definition
+• left (or low): The leftmost position of the search range
+• right (or high): The rightmost position of the search range
+• mid (or middle): The middle position, calculated as:
+mid =
+left + right
+2
+
+2
+0
+5
+1
+8
+2
+12
+3
+16
+4
+23
+5
+38
+6
+56
+7
+72
+8
+91
+9
+left
+mid
+right
+Page 6
+Binary Search Tutorial
+USTHB - L1 Mathematics
+3
+Binary Search Algorithm - Step by Step
+3.1
+The Algorithm in Words
+Step-by-Step
+To search for value X in sorted array T[1..n]:
+1. Initialize:
+• Set left = 1 (first index)
+• Set right = n (last index)
+2. Repeat while left ≤right:
+• Calculate mid = ⌊(left + right) / 2⌋
+• Compare T[mid] with X:
+– If T[mid] = X →Found! Return mid
+– If T[mid] > X →Search left half: set right = mid - 1
+– If T[mid] < X →Search right half: set left = mid + 1
+3. If loop ends without finding X:
+• X is not in the array
+• "not found"
+Page 7
+Binary Search Tutorial
+USTHB - L1 Mathematics
+3.2
+Flowchart
+Start
+left ←1, right ←n
+left ≤right?
+mid ←(left+right)/2
+T[mid] = X?
+T[mid] > X?
+Return mid
+break
+right ←mid-1
+left ←mid+1
+End
+Yes
+No
+Yes
+No
+Yes
+No
+Page 8
+Binary Search Tutorial
+USTHB - L1 Mathematics
+4
+Complete Visual Example
+Let’s search for value 23 in the array: [2, 5, 8, 12, 16, 23, 38, 56, 72, 91]
+4.1
+Initial State
+Array:
+2
+[1]
+5
+[2]
+8
+[3]
+12
+[4]
+16
+[5]
+23
+[6]
+38
+[7]
+56
+[8]
+72
+[9]
+91
+[10]
+Target: X = 23
+left=1
+right=10
+4.2
+Step 1: First Iteration
+Calculate mid = ⌊(1 + 10) / 2⌋= ⌊11/2⌋= 5
+Step 1:
+2
+[1]
+5
+[2]
+8
+[3]
+12
+[4]
+16
+[5]
+23
+[6]
+38
+[7]
+56
+[8]
+72
+[9]
+91
+[10]
+left=1
+mid=5
+right=10
+T[5] = 16
+16 < 23
+Go RIGHT
+Decision: T[5] = 16 < 23, so search the right half. Update: left = mid + 1 = 6
+Page 9
+Binary Search Tutorial
+USTHB - L1 Mathematics
+4.3
+Step 2: Second Iteration
+Now: left = 6, right = 10 Calculate mid = ⌊(6 + 10) / 2⌋= ⌊16/2⌋= 8
+Step 2:
+2
+[1]
+5
+[2]
+8
+[3]
+12
+[4]
+16
+[5]
+23
+[6]
+38
+[7]
+56
+[8]
+72
+[9]
+91
+[10]
+left=6
+mid=8
+right=10
+T[8] = 56
+56 > 23
+Go LEFT
+Decision: T[8] = 56 > 23, so search the left half. Update: right = mid - 1 = 7
+4.4
+Step 3: Third Iteration
+Now: left = 6, right = 7 Calculate mid = ⌊(6 + 7) / 2⌋= ⌊13/2⌋= 6
+Step 3:
+2
+[1]
+5
+[2]
+8
+[3]
+12
+[4]
+16
+[5]
+23
+[6]
+38
+[7]
+56
+[8]
+72
+[9]
+91
+[10]
+left=6
+mid=6
+right=7
+T[6] = 23
+23 = 23
+FOUND!
+FOUND!
+Result: T[6] = 23, which equals our target! Return: index = 6
+Important!
+Found value 23 at index 6 in only 3 steps!
+If we used linear search, we would have needed 6 steps.
+Page 10
+Binary Search Tutorial
+USTHB - L1 Mathematics
+5
+Summary Table of the Example
+Step
+left
+right
+mid
+T[mid]
+Compare
+Action
+Initial
+1
+10
+-
+-
+-
+Initialize
+1
+1
+10
+5
+16
+16 < 23
+left = 6
+2
+6
+10
+8
+56
+56 > 23
+right = 7
+3
+6
+7
+6
+23
+23 = 23
+Found!
+5.1
+Search Space Visualization
+Step 1:
+2
+5
+8
+12
+16
+23
+38
+56
+72
+91
+10 elements
+Step 2:
+2
+5
+8
+12
+16
+23
+38
+56
+72
+91
+5 elements
+Step 3:
+2
+5
+8
+12
+16
+23
+38
+56
+72
+91
+2 elements
+Found:
+2
+5
+8
+12
+16 23 38
+56
+72
+91
+1 element
+Important!
+Notice how the search space is cut in half at each step: [ 10 →5 →2 →1 (Found!)]
+Page 11
+Binary Search Tutorial
+USTHB - L1 Mathematics
+6
+The Binary Search Algorithm in Pseudocode
+6.1
+Iterative Version (Using While Loop)
+1 Algorithm
+Binary_Search
+2 // Input: Sorted array T[n], target value X
+3 // Output: Index of X if found , -1 otherwise
+4 Var T[n] : integer;
+5 n, X, left , right , mid : integer;
+6 found : boolean;
+7 Begin
+8 // your array must be sorted and ready
+9 // Initialize
+search range
+10 left <- 1;
+11 right <- n;
+12 found <- false;
+13 // Search while range is valid
+14 While (left
+<= right and not found) Do
+15
+// Calculate
+middle index
+16
+mid <- (left + right) div 2;
+17
+18
+// Check if we found the target
+19
+If (T[mid] = X) Then
+20
+found <- true;
+21
+Write (" Element found at index: ", mid);
+22
+Else
+23
+// Adjust search range
+24
+If (T[mid] > X) Then
+25
+// Search left half
+26
+right <- mid - 1;
+27
+Else
+28
+// Search right half
+29
+left <- mid + 1;
+30
+EndIf;
+31
+EndIf;
+32 EndWhile;
+33
+34 // If not found
+35 If (not found) Then
+36
+Write (" Element not found in array ");
+37 EndIf;
+38 End;
+Listing 1: Binary Search - Iterative Version
+Page 12
+Binary Search Tutorial
+USTHB - L1 Mathematics
+6.2
+Complete Program with Input/Output
+1 Algorithm
+Binary_Search_Program
+2 Var T[n] : integer;
+3 n, X, i, left , right , mid : integer;
+4 found : boolean;
+5 Begin
+6 // Input array size
+7 Write (" Enter the number of elements: ");
+8 Read(n);
+9 // Input sorted array
+10 Write (" Enter ", n, " sorted
+elements :");
+11 For i <- 1 to n Do
+12
+Read(T[i]);
+13 EndFor;
+14
+15 // Input target value
+16 Write (" Enter the value to search: ");
+17 Read(X);
+18
+19 // Binary Search
+20 left <- 1;
+21 right <- n;
+22 found <- false;
+23
+24 While (left
+<= right and not found) Do
+25
+mid <- (left + right) div 2;
+26
+27
+Write (" Checking index ", mid , " value: ", T[mid]);
+28
+29
+If (T[mid] = X) Then
+30
+found <- true;
+31
+Write (" SUCCESS! Element ", X, " found at index ", mid);
+32
+Else
+33
+If (T[mid] > X) Then
+34
+Write (" Searching left half ...");
+35
+right <- mid - 1;
+36
+Else
+37
+Write (" Searching right half ...");
+38
+left <- mid + 1;
+39
+EndIf;
+40
+EndIf;
+41 EndWhile;
+42
+43 If (not found) Then
+44
+Write (" Element ", X, " not found in the array ");
+45 EndIf;
+46 End;
+Listing 2: Complete Binary Search Program
+Page 13
+Binary Search Tutorial
+USTHB - L1 Mathematics
+7
+Example: Element Not Found
+Let’s search for value 20 in array: [2, 5, 8, 12, 16, 23, 38, 56, 72, 91]
+7.1
+Step-by-Step Trace
+Step
+left
+right
+mid
+T[mid]
+1
+10
+5
+16
+16 < 20
+10
+8
+56
+56 > 20
+right = 7 height3
+6
+23
+23 > 20
+right = 5 height
+left (6) > right (5) →Loop ends, element not found
+7.2
+Visual Representation
+Step 1:
+2
+5
+8
+12
+16
+23
+38
+56
+72
+91
+16 < 20 →go right
+Step 2:
+2
+5
+8
+12
+16
+23
+38
+56
+72
+91
+56 > 20 →go left
+Step 3:
+2
+5
+8
+12
+16
+23
+38
+56
+72
+91
+23 > 20 →go left
+Result:
+2
+5
+8
+12
+16
+23
+38
+56
+72
+91
+NOT FOUND
+left = 6, right = 5 →left > right →exit
+Important!
+When left » > right, it means the search space is exhausted. The element is definitely
+not in the array.
+Page 14
+Binary Search Tutorial
+USTHB - L1 Mathematics
+8
+Important Concepts and Details
+8.1
+Why Must the Array Be Sorted?
+Example
+Example with UNSORTED array: [15, 3, 9, 21, 7, 12, 18] Searching for 7:
+• mid = 4, T[4] = 21
+• 21 > 7, so we search left half: [15, 3, 9]
+• But 7 is actually in the RIGHT half!
+• Binary search FAILS on unsorted data
+Example with SORTED array: [3, 7, 9, 12, 15, 18, 21] Now searching for 7
+works correctly because the ordering guarantees:
+• If T[mid] > 7, then ALL elements after mid are > 7
+• If T[mid] < 7, then ALL elements before mid are < 7
+8.2
+Calculating the Middle Index
+Definition
+The middle index is calculated as: [ mid =
+ left+right
+2
+
+]Inpseudocode :
+The loop stops when:
+left » > right
+Why?
+• When left = right, there’s 1 element left to check
+• When left > right, the search space is empty
+• This means the element is not in the array
+Page 15
+Binary Search Tutorial
+USTHB - L1 Mathematics
+9
+Common Mistakes and How to Avoid Them
+9.1
+Mistake 1: Using Array on Unsorted Data
+Example
+Wrong:
+1 T <- [5, 2, 8, 1, 9, 3];
+// Unsorted!
+2 BinarySearch(T, 3);
+// Will NOT work correctly
+Correct:
+1 T <- [5, 2, 8, 1, 9, 3];
+2 Sort(T);
+// Sort first: [1, 2, 3, 5, 8,
+9]
+3 BinarySearch(T, 3);
+// Now it works!
+9.2
+Mistake 2: Wrong Loop Condition
+Example
+Wrong:
+1 While (left < right) Do
+// Missing the = case!
+This fails when the target is at the exact position where left = right. Correct:
+1 While (left
+<= right) Do
+// Include the = case
+9.3
+Mistake 3: Infinite Loop
+Example
+Wrong:
+1 If (T[mid] > X) Then
+2 right <- mid;
+// Should be mid - 1!
+3 Else
+4 left <- mid;
+// Should be mid + 1!
+5 EndIf;
+This can cause infinite loops when left = right = mid. Correct:
+1 If (T[mid] > X) Then
+2 right <- mid - 1;
+// Exclude mid
+3 Else
+4 left <- mid + 1;
+// Exclude mid
+5 EndIf;
+Page 16
+Binary Search Tutorial
+USTHB - L1 Mathematics
+9.4
+Mistake 4: Wrong Middle Calculation
+Example
+Wrong:
+1 mid <- (left + right) / 2;
+// Using / instead of div
+This might give a floating-point result like 5.5, which can’t be used as an array
+index! Correct:
+1 mid <- (left + right) div 2;
+// Integer
+division
+Page 17
+Binary Search Tutorial
+USTHB - L1 Mathematics
+10
+Practice Problems
+10.1
+Problem 1: Manual Trace
+Trace binary search to find value 12 in: [1, 3, 5, 7, 9, 11, 12, 15, 17, 19, 21]
+Fill in the table:
+Step
+left
+right
+mid
+T[mid]
+Action height1
+1
+11
+height2
+height3
+height4
+height
+10.2
+Problem 2: Find Non-Existent Element
+Trace binary search to find value 14 in: [2, 4, 6, 8, 10, 12, 16, 18, 20] Show
+when and why the algorithm stops.
+10.3
+Problem 3: Edge Cases
+Perform binary search for the following:
+a) Search for 5 in: [5] (single element, match)
+b) Search for 3 in: [5] (single element, no match)
+c) Search for 1 in: [1, 2, 3, 4, 5] (first element)
+d) Search for 5 in: [1, 2, 3, 4, 5] (last element)
+e) Search for 0 in: [1, 2, 3, 4, 5] (before all elements)
+f) Search for 6 in: [1, 2, 3, 4, 5] (after all elements)
+10.4
+Problem 4: Code Completion
+Complete the following binary search algorithm:
+1 Algorithm
+Binary_Search
+2 Var T[n] : integer;
+3 n, X, left , right , mid : integer;
+4 Begin
+5 left <- _________;
+6 right <- _________;
+7 While (_________
+<= _________) Do
+8
+mid <- (left + right) _________ 2;
+9
+10
+If (T[mid] = X) Then
+11
+Write (" Found at index: ", _________);
+12
+break;
+13
+EndIf;
+14
+15
+If (T[mid] > X) Then
+Page 18
+Binary Search Tutorial
+USTHB - L1 Mathematics
+16
+right <- _________;
+17
+Else
+18
+left <- _________;
+19
+EndIf;
+20 EndWhile;
+21
+22 Write ("Not found ");
+23 End;
+Page 19
+Binary Search Tutorial
+USTHB - L1 Mathematics
+11
+Comparison: Linear Search vs Binary Search
+11.1
+Visual Comparison
+Linear Search
+Binary Search
+2
+5
+8
+12
+16
+23
+38
+56
+1
+2
+3
+4
+5
+6
+Target: 23
+Steps: 6
+2
+5
+8
+12
+16
+23
+38
+56
+1
+2
+3
+Target: 23
+Steps: 3
+11.2
+When to Use Each
+Use Binary Search When:
+• Array is already sorted
+• Array is large (n » > 50)
+• You’ll search multiple times
+• Speed is critical
+Use Linear Search When:
+• Array is small (n « < 20)
+• Array is unsorted and you only search once
+• Sorting cost is higher than search benefit
+• Simplicity is preferred over speed
+Page 20
+Binary Search Tutorial
+USTHB - L1 Mathematics
+12
+Summary and Key Points
+Binary Search Summary
+Algorithm Type: Divide and Conquer, Iterative Main Steps:
+1. Start with left = 1, right = n
+2. Calculate mid = (left + right) div 2
+3. Compare T[mid] with target X:
+• If equal →Found!
+• If T[mid] » > X →Search left: right = mid - 1
+• If T[mid] « < X →Search right: left = mid + 1
+4. Repeat until found or left » > right
+Key Requirements:
+• Array MUST be sorted
+• Use integer division for mid
+• Loop condition: left ≤right
+• Update: right = mid - 1 or left = mid + 1
+12.1
+Memory Aid: The 3 Rules
+1. SORTED: Array must be sorted (ascending or descending)
+2. MIDDLE: Always check the middle element first
+3. HALVE: Cut the search space in half each time
+Page 21
+Binary Search Tutorial
+USTHB - L1 Mathematics
+13
+Final Checklist
+Before your exam, make sure you can:
+□Explain why binary search is faster than linear search
+□Explain why the array must be sorted
+□Calculate the middle index correctly
+□Trace binary search step-by-step on paper
+□Draw the search space at each iteration
+□Write the complete binary search algorithm
+□Handle the case when element is not found
+□Identify and avoid common mistakes
+□Determine when left > right
+□Test edge cases (first, last, single element)
+Good Luck with Your Studies!
+Remember: Practice tracing binary search on paper with
+different arrays and target values until it becomes second
+nature. "Divide and conquer, one half at a time!"
+Common Exam Questions
+1. Trace binary search for a given array and target
+2. Write the complete binary search algorithm
+3. Explain why array must be sorted
+4. Compare linear search vs binary search
+5. Find the number of comparisons for a given search
+6. Identify errors in given binary search code
+7. Handle edge cases (empty array, single element, etc.)
+Page 22
+
+================================================================================
+FILE: ALgorithms_Exam_revesion.pdf
+================================================================================
+Complete Algorithms Revision Guide
+L1 Mathematics - USTHB 2025-2026
+"This attachment may contain errors because I made it myself".khaled Said
+January 24, 2026
+Contents
+1
+Part 1: Algorithm Fundamentals
+4
+1.1
+What is an Algorithm? . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.2
+Algorithm vs. Program . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.3
+General Structure . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+2
+Part 2: Variables, Constants & Data Types
+5
+2.1
+Variables vs. Constants . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+2.2
+Data Types . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+2.3
+Variable Naming Rules . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+2.4
+Declaration Examples . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+3
+Part 3: Assignment & Operations
+6
+3.1
+Assignment Operator . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+3.2
+Arithmetic Operations . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+3.3
+Relational Operations . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+3.4
+Logical Operations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+3.5
+Operator Precedence . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+4
+Part 4: Input/Output Operations
+8
+4.1
+Read() Instruction
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8
+4.2
+Write() Instruction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8
+5
+Part 5: Control Flow (If-Else)
+9
+5.1
+If-Else Syntax . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+5.2
+Nested If Statements . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+5.3
+Switch Statement . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+6
+Part 6: Loops
+10
+6.1
+For Loop (Fixed Repetitions)
+. . . . . . . . . . . . . . . . . . . . . . . .
+10
+6.2
+While Loop (Condition-based) . . . . . . . . . . . . . . . . . . . . . . . .
+10
+6.3
+Do-While Loop . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10
+6.4
+Loop Comparison . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11
+1
+Exam Revision 2024
+USTHB L1 Mathematics - Algorithms
+7
+Part 7: Arrays
+12
+7.1
+Why Arrays?
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+7.2
+1D Array Basics . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+7.3
+1D Array Declaration . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+7.4
+1D Array Access
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+7.5
+Fill Array Algorithm . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+7.6
+Find Maximum . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+7.7
+Search in Array . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+7.8
+Reverse Array . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+15
+7.9
+2D Arrays (Matrices) . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+15
+7.10 2D Array Declaration . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+15
+7.11 Fill 2D Array . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+7.12 Find Minimum in 2D . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+17
+8
+Part 8: Special Algorithms
+18
+8.1
+Prime Number Check . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+18
+8.2
+Palindrome number Check . . . . . . . . . . . . . . . . . . . . . . . . . .
+18
+8.3
+Fibonacci Sequence . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+8.4
+Factorial . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+8.5
+GCD - Greatest Common Divisor (PGCD) . . . . . . . . . . . . . . . . .
+21
+8.6
+LCM - Least Common Multiple (PPCM) . . . . . . . . . . . . . . . . . .
+22
+8.7
+Bubble Sort . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+23
+8.8
+Selection Sort . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+23
+8.9
+Sum of Digits . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+8.10 Reverse a Number
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+8.11 Count Occurrences in Array . . . . . . . . . . . . . . . . . . . . . . . . .
+26
+9
+Part 9: Problem-Solving Methodology
+27
+9.1
+5-Step Method
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+27
+9.1.1
+Step 1: Understand the Problem
+. . . . . . . . . . . . . . . . . .
+27
+9.1.2
+Step 2: Identify Variables
+. . . . . . . . . . . . . . . . . . . . . .
+27
+9.1.3
+Step 3: Plan Logic in English
+. . . . . . . . . . . . . . . . . . . .
+27
+9.1.4
+Step 4: Write Formal Algorithm . . . . . . . . . . . . . . . . . . .
+27
+9.1.5
+Step 5: Test with Examples . . . . . . . . . . . . . . . . . . . . .
+27
+9.2
+Common Problem Patterns
+. . . . . . . . . . . . . . . . . . . . . . . . .
+27
+10 Part 10: Exam Tips & Common Mistakes
+29
+10.1 What Examiners Reward . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+10.2 What Examiners Penalize
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+10.3 Common Mistakes
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+10.4 Pre-Submission Checklist . . . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+10.5 Time Management
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+31
+11 Part 11: Quick Reference
+32
+11.1 Algorithm Template
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+11.2 Data Types . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+11.3 Operators . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+11.4 Control Structures
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+11.5 I/O . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+2
+Exam Revision 2024
+USTHB L1 Mathematics - Algorithms
+11.6 Arrays . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+11.7 Useful Functions
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+11.8 Common Formulas . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+12 Conclusion
+34
+3
+Exam Revision 2024
+USTHB L1 Mathematics - Algorithms
+1
+Part 1: Algorithm Fundamentals
+1.1
+What is an Algorithm?
+An algorithm is:
+• A finite sequence of well-defined, unambiguous, executable steps
+• A systematic approach to solving a problem
+• A set of instructions that transforms input into output
+Key Properties:
+1. Must have a finite number of steps
+2. Must terminate after finite operations
+3. Must provide a result
+4. Steps follow in a certain order
+5. Each step must be unambiguous
+1.2
+Algorithm vs. Program
+• Algorithm: Human-readable description of steps
+• Program: Algorithm translated into a programming language
+TIP
+In this course, we write algorithms in French-style pseudocode using English
+words. This is NOT a programming language.
+1.3
+General Structure
+1
+Algorithm
+Algorithm_Name;
+2
+Var var1 , var2 : type;
+3
+Const const1 = value;
+4
+Begin
+5
+< Sequence of instructions >
+6
+End;
+Three essential parts:
+1. Header: Algorithm name
+2. Declarations: Variables and Constants
+3. Body: Instructions between Begin and End
+WARNING
+EVERY algorithm MUST declare variables before any instructions.
+4
+Exam Revision 2024
+USTHB L1 Mathematics - Algorithms
+2
+Part 2: Variables, Constants & Data Types
+2.1
+Variables vs. Constants
+Variable: Can change during execution
+1
+Var x : integer;
+2
+x ←
+5;
+3
+x ←
+10;
+// x changed:
+OK
+Constant: Cannot change during execution
+1
+Const pi = 3.14;
+2
+pi
+←
+3.15;
+// ERROR
+2.2
+Data Types
+Type
+Keyword
+Examples
+Operations
+Integer
+integer
+-9, 0, 31
++, -, *, div, mod
+Float
+float
+0.25, -1.33
++, -, *, /
+Character
+character
+’a’, ’A’, ’3’
+=, <, >, ≤
+Boolean
+boolean
+true, false
+NOT, AND, OR
+String
+string
+“hello”
+Array of chars
+2.3
+Variable Naming Rules
+Valid names:
+• Must start with a letter
+• Can contain letters and numbers
+• Cannot be reserved words
+Examples:
+• Valid: x, age, score1, student_name
+• Invalid: 1x, for, x-y, score value
+TIP
+Choose meaningful names. student_age is better than sa.
+2.4
+Declaration Examples
+1
+Var x, y : integer;
+2
+salary : float;
+3
+name : string;
+4
+5
+Const pi = 3.14;
+6
+max_value = 100;
+5
+Exam Revision 2024
+USTHB L1 Mathematics - Algorithms
+3
+Part 3: Assignment & Operations
+3.1
+Assignment Operator
+The arrow ←sets a value to a variable.
+1
+x ←
+5;
+// x now contains 5
+2
+y ←x + 3;
+// y gets 8
+3
+x ←x + 1;
+// increment
+WARNING
+Always use ←(arrow), NOT = (equals). The equals is for comparisons.
+3.2
+Arithmetic Operations
+Operation
+Symbol
+Example
+Result
+Addition
++
+10 + 3
+13
+Subtraction
+-
+10 - 3
+7
+Multiplication
+*
+10 * 3
+30
+Division
+/
+10 / 3
+3.33
+Integer Division
+div
+10 div 3
+3
+Modulo
+mod
+10 mod 3
+1
+Exponentiation
+^
+10^2
+100
+3.3
+Relational Operations
+Operation
+Symbol
+Example
+Greater than
+>
+5 > 3 returns true
+Less than
+<
+5 < 3 returns false
+Greater or equal
+≥
+5 ≥5 returns true
+Less or equal
+≤
+5 ≤3 returns false
+Equal
+=
+5 = 5 returns true
+Not equal
+̸=
+5 ̸= 3 returns true
+3.4
+Logical Operations
+Operation
+Symbol
+Meaning
+AND
+&
+Both must be true
+OR
+|
+At least one true
+NOT
+!
+Inverts value
+3.5
+Operator Precedence
+1. Parentheses ( )
+2. Exponentiation ^
+3. Multiplication *, Division /, Modulo mod
+4. Addition +, Subtraction -
+6
+Exam Revision 2024
+USTHB L1 Mathematics - Algorithms
+TIP
+Always use parentheses when in doubt: (a + b) * c is clearer.
+7
+Exam Revision 2024
+USTHB L1 Mathematics - Algorithms
+4
+Part 4: Input/Output Operations
+4.1
+Read() Instruction
+Reads data from keyboard:
+1
+Read(x);
+// Read one value
+2
+Read(x, y, z);
+// Read three values
+4.2
+Write() Instruction
+Displays output:
+1
+Write (" Enter value: ");
+// Text
+2
+Write(x);
+// Variable
+3
+Write (" Result: ", x + 5);
+// Text and expression
+EXAMPLE: Simple I/O
+1
+Algorithm
+Average_Two;
+2
+Var x, y : float;
+3
+Begin
+4
+Write (" Enter first:
+");
+5
+Read(x);
+6
+Write (" Enter second: ");
+7
+Read(y);
+8
+Write (" Average: ", (x + y) / 2);
+9
+End;
+8
+Exam Revision 2024
+USTHB L1 Mathematics - Algorithms
+5
+Part 5: Control Flow (If-Else)
+5.1
+If-Else Syntax
+1
+If (condition) Then
+2
+< instructions if true >
+3
+Else
+4
+< instructions if false >
+5
+End If;
+EXAMPLE: Voting Example
+1
+Algorithm
+Check_Vote;
+2
+Var age : integer;
+3
+Begin
+4
+Write (" Enter age: ");
+5
+Read(age);
+6
+If (age
+>= 18) Then
+7
+Write ("Can vote ");
+8
+Else
+9
+Write ("Too young ");
+10
+End If;
+11
+End;
+5.2
+Nested If Statements
+1
+If (temperature > 25) Then
+2
+If (is_raining) Then
+3
+Write ("Hot and rainy ");
+4
+Else
+5
+Write ("Hot and dry");
+6
+End If;
+7
+Else
+8
+Write (" Cool ");
+9
+End If;
+5.3
+Switch Statement
+Use for one variable with many values:
+1
+Switch (day_number)
+2
+Case 1:
+3
+Write (" Monday ");
+4
+Case 2:
+5
+Write (" Tuesday ");
+6
+Else:
+7
+Write (" Invalid ");
+8
+End Switch;
+9
+Exam Revision 2024
+USTHB L1 Mathematics - Algorithms
+6
+Part 6: Loops
+6.1
+For Loop (Fixed Repetitions)
+Use when you know exactly how many times:
+1
+For i ←1 to 10 Do
+2
+Write(i);
+3
+EndFor;
+Execution: i goes 1, 2, 3, ..., 10
+EXAMPLE: Print 1 to 5
+1
+For i ←1 to 5 Do
+2
+Write(i);
+3
+EndFor;
+4
+// Output: 1 2 3 4 5
+6.2
+While Loop (Condition-based)
+Use when you don’t know how many iterations:
+1
+While (condition) Do
+2
+< loop body >
+3
+EndWhile;
+EXAMPLE: Count from 1 to 5
+1
+Var i : integer;
+2
+Begin
+3
+i ←
+1;
+4
+While (i <= 5) Do
+5
+Write(i);
+6
+i ←i + 1;
+7
+EndWhile;
+8
+End;
+WARNING
+In While, you MUST manually update the loop variable, or infinite loop!
+6.3
+Do-While Loop
+Guaranteed to run at least once:
+1
+Do
+2
+< loop body >
+3
+While (condition);
+10
+Exam Revision 2024
+USTHB L1 Mathematics - Algorithms
+6.4
+Loop Comparison
+Loop
+Use When
+At Least Once?
+For
+Known iterations
+Yes
+While
+Unknown, condition-based
+No
+Do-While
+Must run once
+Yes
+11
+Exam Revision 2024
+USTHB L1 Mathematics - Algorithms
+7
+Part 7: Arrays
+7.1
+Why Arrays?
+Store 450 student grades in one variable instead of 450 separate variables.
+7.2
+1D Array Basics
+A set of values with:
+• Same variable name
+• Same data type
+• Different indices (positions)
+7.3
+1D Array Declaration
+1
+Var array_name[size] : type;
+2
+3
+// Examples
+4
+Var grade [450] : float;
+5
+Var numbers [100] : integer;
+7.4
+1D Array Access
+1
+grade [1]
+←
+15;
+// Set position 1
+2
+x ←
+grade [3];
+// Get position 3
+3
+grade[i] ←
+some_value; // Use variable as index
+TIP
+Arrays are 1-indexed: grade[1], grade[2], ..., grade[450]
+7.5
+Fill Array Algorithm
+EXAMPLE: Fill Array with Input
+1
+Algorithm
+Fill_Grades;
+2
+Var T[n] : float;
+3
+i, n : integer;
+4
+Begin
+5
+Write (" Enter number of grades: ");
+6
+Read(n);
+7
+For i ←1 to n Do
+8
+Write (" Enter grade ", i, ":
+");
+9
+Read(T[i]);
+10
+EndFor;
+11
+End;
+12
+Exam Revision 2024
+USTHB L1 Mathematics - Algorithms
+7.6
+Find Maximum
+EXAMPLE: Find Max in Array
+1
+Algorithm
+Find_Max;
+2
+Var T[n] : float;
+3
+max :
+float;
+4
+i, n : integer;
+5
+Begin
+6
+Write (" Enter number of grades: ");
+7
+Read(n);
+8
+9
+// Fill array first
+10
+For i ←1 to n Do
+11
+Write (" Enter grade ", i, ": ");
+12
+Read(T[i]);
+13
+EndFor;
+14
+15
+// Find maximum
+16
+max
+←T[1];
+17
+For i ←2 to n Do
+18
+If (T[i] > max) Then
+19
+max
+←T[i];
+20
+End If;
+21
+EndFor;
+22
+Write (" Maximum:
+", max);
+23
+End;
+13
+Exam Revision 2024
+USTHB L1 Mathematics - Algorithms
+7.7
+Search in Array
+EXAMPLE: Search Element
+1
+Algorithm
+Search;
+2
+Var T[n] :
+float;
+3
+target : float;
+4
+i, n, position : integer;
+5
+found : boolean;
+6
+Begin
+7
+Write (" Enter number of grades: ");
+8
+Read(n);
+9
+10
+// Fill array
+11
+For i ←1 to n Do
+12
+Read(T[i]);
+13
+EndFor;
+14
+15
+Write (" Enter value to search: ");
+16
+Read(target);
+17
+18
+found
+←
+false;
+19
+position
+←
+0;
+20
+i ←
+1;
+21
+22
+While (i <= n) AND (found = false) Do
+23
+If (T[i] = target) Then
+24
+found
+←
+true;
+25
+position
+←i;
+26
+End If;
+27
+i ←i + 1;
+28
+EndWhile;
+29
+30
+If (found) Then
+31
+Write (" Found at position:
+", position);
+32
+Else
+33
+Write ("Not found ");
+34
+End If;
+35
+End;
+14
+Exam Revision 2024
+USTHB L1 Mathematics - Algorithms
+7.8
+Reverse Array
+EXAMPLE: Reverse Elements
+1
+Algorithm
+Reverse;
+2
+Var A[n] : integer;
+3
+temp : integer;
+4
+i, j, n : integer;
+5
+Begin
+6
+Write (" Enter array size: ");
+7
+Read(n);
+8
+9
+// Fill array
+10
+For i ←1 to n Do
+11
+Read(A[i]);
+12
+EndFor;
+13
+14
+// Reverse
+15
+i ←
+1;
+16
+j ←n;
+17
+While (i < j) Do
+18
+temp
+←A[i];
+19
+A[i] ←A[j];
+20
+A[j] ←
+temp;
+21
+i ←i + 1;
+22
+j ←j - 1;
+23
+EndWhile;
+24
+25
+// Display
+reversed array
+26
+Write (" Reversed:
+");
+27
+For i ←1 to n Do
+28
+Write(A[i]);
+29
+EndFor;
+30
+End;
+7.9
+2D Arrays (Matrices)
+An array with rows and columns. Each element needs two indices.
+7.10
+2D Array Declaration
+1
+Var matrix[rows ][ columns] : type;
+2
+3
+// Example
+4
+Var matrix [10][20] : integer;
+15
+Exam Revision 2024
+USTHB L1 Mathematics - Algorithms
+7.11
+Fill 2D Array
+EXAMPLE: Fill Matrix
+1
+Algorithm
+Fill_Matrix;
+2
+Var M[n][m] : integer;
+3
+i, j, n, m : integer;
+4
+Begin
+5
+Write (" Enter rows: ");
+6
+Read(n);
+7
+Write (" Enter columns: ");
+8
+Read(m);
+9
+10
+For i ←1 to n Do
+11
+For j ←1 to m Do
+12
+Write (" Element [", i, "][", j, "]: ");
+13
+Read(M[i][j]);
+14
+EndFor;
+15
+EndFor;
+16
+End;
+16
+Exam Revision 2024
+USTHB L1 Mathematics - Algorithms
+7.12
+Find Minimum in 2D
+EXAMPLE: Min in Matrix
+1
+Algorithm
+Find_Min;
+2
+Var R[n][m] : integer;
+3
+min :
+integer;
+4
+i, j, n, m : integer;
+5
+Begin
+6
+Write (" Enter rows: ");
+7
+Read(n);
+8
+Write (" Enter columns: ");
+9
+Read(m);
+10
+11
+// Fill matrix
+12
+For i ←1 to n Do
+13
+For j ←1 to m Do
+14
+Read(R[i][j]);
+15
+EndFor;
+16
+EndFor;
+17
+18
+// Find minimum
+19
+min
+←R[1][1];
+20
+For i ←1 to n Do
+21
+For j ←1 to m Do
+22
+If (R[i][j] < min) Then
+23
+min
+←R[i][j];
+24
+End If;
+25
+EndFor;
+26
+EndFor;
+27
+Write (" Minimum: ", min);
+28
+End;
+17
+Exam Revision 2024
+USTHB L1 Mathematics - Algorithms
+8
+Part 8: Special Algorithms
+8.1
+Prime Number Check
+Definition: A number > 1 divisible only by 1 and itself.
+EXAMPLE: Is Prime? (Optimized)
+1
+Algorithm
+Is_Prime;
+2
+Var n : integer;
+3
+i : integer;
+4
+is_prime : boolean;
+5
+Begin
+6
+Write (" Enter number :");
+7
+Read(n);
+8
+9
+If n <= 1 Then
+10
+is_prime
+←
+false;
+11
+Else
+12
+is_prime
+←
+true;
+13
+For i ←2 To n - 1 Do
+14
+If n mod i = 0 Then
+15
+is_prime
+←
+false;
+16
+EndIf;
+17
+EndFor;
+18
+EndIf;
+19
+20
+If is_prime Then
+21
+Write(n, " is Prime ");
+22
+Else
+23
+Write(n, " is Not Prime ");
+24
+EndIf;
+25
+End;
+TIP
+Optimization: We only check up to √n and skip even numbers after 2. This is
+much faster than checking all numbers up to n-1.
+8.2
+Palindrome number Check
+Definition: Reads same forwards and backwards (e.g., “12321”).
+18
+Exam Revision 2024
+USTHB L1 Mathematics - Algorithms
+EXAMPLE: Check Palindrome (Number)
+1
+Algorithm
+Palindrome;
+2
+Var n : integer;
+3
+temp : integer;
+4
+rev : integer;
+5
+digit : integer;
+6
+Begin
+7
+Write (" Enter number :");
+8
+Read(n);
+9
+10
+temp
+←n;
+11
+rev
+←
+0;
+12
+13
+While temp > 0 Do
+14
+digit
+←
+temp mod 10;
+15
+rev
+←
+rev * 10 + digit;
+16
+temp
+←
+temp div 10;
+17
+EndWhile;
+18
+19
+If rev = n Then
+20
+Write (" Palindrome ");
+21
+Else
+22
+Write ("Not Palindrome ");
+23
+EndIf;
+24
+End;
+8.3
+Fibonacci Sequence
+Definition: F1 = 1, F2 = 1, Fn = Fn−1 + Fn−2
+19
+Exam Revision 2024
+USTHB L1 Mathematics - Algorithms
+EXAMPLE: Fibonacci using arrays
+1
+Algorithm
+Fibonacci;
+2
+Var F[n] : integer;
+3
+n, i : integer;
+4
+Begin
+5
+Write ("How many terms? ");
+6
+Read(n);
+7
+8
+If (n >= 1) Then
+9
+F[1]
+←
+1;
+10
+End If;
+11
+12
+If (n >= 2) Then
+13
+F[2]
+←
+1;
+14
+End If;
+15
+16
+For i ←3 to n Do
+17
+F[i] ←F[i-1] + F[i -2];
+18
+EndFor;
+19
+20
+Write (" Fibonacci
+sequence: ");
+21
+For i ←1 to n Do
+22
+Write(F[i]);
+23
+EndFor;
+24
+End;
+8.4
+Factorial
+Definition: n! = n × (n −1) × (n −2) × . . . × 1, and 0! = 1
+20
+Exam Revision 2024
+USTHB L1 Mathematics - Algorithms
+EXAMPLE: Calculate Factorial
+1
+Algorithm
+Factorial;
+2
+Var n : integer;
+3
+fact : integer;
+4
+i : integer;
+5
+Begin
+6
+Write (" Enter number: ");
+7
+Read(n);
+8
+9
+If (n < 0) Then
+10
+Write (" Error: Factorial
+undefined for negatives ");
+11
+Else
+12
+fact
+←
+1;
+13
+For i ←2 to n Do
+14
+fact
+←
+fact * i;
+15
+EndFor;
+16
+Write(n, "! = ", fact);
+17
+End If;
+18
+End;
+8.5
+GCD - Greatest Common Divisor (PGCD)
+Definition: The largest number that divides both a and b.
+21
+Exam Revision 2024
+USTHB L1 Mathematics - Algorithms
+EXAMPLE: GCD using Euclidean Algorithm
+1
+Algorithm GCD;
+2
+Var a, b, temp : integer;
+3
+Begin
+4
+Write (" Enter first number: ");
+5
+Read(a);
+6
+Write (" Enter second number: ");
+7
+Read(b);
+8
+9
+// Handle
+negative
+numbers
+10
+If (a < 0) Then
+11
+a ←
+-a;
+12
+End If;
+13
+If (b < 0) Then
+14
+b ←
+-b;
+15
+End If;
+16
+17
+While (b != 0) Do
+18
+temp
+←b;
+19
+b ←a mod b;
+20
+a ←
+temp;
+21
+EndWhile;
+22
+23
+Write ("GCD = ", a);
+24
+End;
+8.6
+LCM - Least Common Multiple (PPCM)
+Definition: The smallest number divisible by both a and b.
+Formula: LCM(a, b) =
+a×b
+GCD(a,b)
+22
+Exam Revision 2024
+USTHB L1 Mathematics - Algorithms
+EXAMPLE: LCM using GCD
+1
+Algorithm LCM;
+2
+Var a, b, original_a , original_b , temp : integer;
+3
+Begin
+4
+Write (" Enter first number: ");
+5
+Read(a);
+6
+Write (" Enter second number: ");
+7
+Read(b);
+8
+9
+original_a
+←a;
+10
+original_b
+←b;
+11
+12
+// Calculate GCD first
+13
+While (b != 0) Do
+14
+temp
+←b;
+15
+b ←a mod b;
+16
+a ←
+temp;
+17
+EndWhile;
+18
+// Now a contains GCD
+19
+20
+Write ("LCM = ", (original_a * original_b) div a);
+21
+End;
+8.7
+Bubble Sort
+Definition: Repeatedly swap adjacent elements if they are in wrong order.
+EXAMPLE: Bubble Sort (Ascending)
+1
+Algorithm
+Bubble_sort;
+2
+Var i, j, n, temp , T[5]: integer;
+3
+Begin \\ T must be filled first
+4
+n ←
+5;
+5
+For i ←1 to n-1 do
+6
+For j ←1 to n - i do
+7
+If T[j] > T[j+1] Then
+8
+temp
+←T[j];
+9
+T[j] ←T[j+1];
+10
+T[j+1]
+←
+temp;
+11
+EndIf;
+12
+EndFor;
+13
+EndFor;
+14
+End;
+8.8
+Selection Sort
+Definition: Find minimum element and place it at the beginning.
+23
+Exam Revision 2024
+USTHB L1 Mathematics - Algorithms
+EXAMPLE: Selection Sort (Ascending)
+1
+Algorithm
+Selection_Sort;
+2
+Var i, j, min , p, T[5]: integer;
+3
+Begin \\ T must be filled first
+4
+For i ←1 to 5 do
+5
+min
+←T[i];
+6
+p ←i;
+7
+For j ←i+1 to 5 do
+8
+If(T[j] < min)
+9
+min
+←T[j];
+10
+p ←j;
+11
+EndIf;
+12
+EndFor;
+13
+T[p] ←T[i];
+14
+T[i] ←
+min;
+15
+EndFor;
+16
+End;
+8.9
+Sum of Digits
+EXAMPLE: Sum of Digits
+1
+Algorithm
+Sum_Digits;
+2
+Var n, sum , digit :
+integer;
+3
+Begin
+4
+Write (" Enter number: ");
+5
+Read(n);
+6
+7
+// Handle
+negative
+numbers
+8
+If (n < 0) Then
+9
+n ←
+-n;
+10
+End If;
+11
+12
+sum
+←
+0;
+13
+While (n > 0) Do
+14
+digit
+←n mod 10;
+15
+sum
+←
+sum + digit;
+16
+n ←n div 10;
+17
+EndWhile;
+18
+19
+Write ("Sum of digits:
+", sum);
+20
+End;
+24
+Exam Revision 2024
+USTHB L1 Mathematics - Algorithms
+8.10
+Reverse a Number
+EXAMPLE: Reverse Number
+1
+Algorithm
+Reverse_Number;
+2
+Var n, reversed , digit : integer;
+3
+is_negative : boolean;
+4
+Begin
+5
+Write (" Enter number: ");
+6
+Read(n);
+7
+8
+is_negative
+←
+false;
+9
+If (n < 0) Then
+10
+is_negative
+←
+true;
+11
+n ←
+-n;
+12
+End If;
+13
+14
+reversed
+←
+0;
+15
+While (n > 0) Do
+16
+digit
+←n mod 10;
+17
+reversed
+←
+reversed * 10 + digit;
+18
+n ←n div 10;
+19
+EndWhile;
+20
+21
+If (is_negative) Then
+22
+reversed
+←
+-reversed;
+23
+End If;
+24
+25
+Write (" Reversed: ", reversed);
+26
+End;
+25
+Exam Revision 2024
+USTHB L1 Mathematics - Algorithms
+8.11
+Count Occurrences in Array
+EXAMPLE: Count Occurrences
+1
+Algorithm
+Count_Occurrences;
+2
+Var arr[nj] : integer;
+3
+n, i, target , count : integer;
+4
+Begin
+5
+Write (" Enter array size: ");
+6
+Read(n);
+7
+8
+For i ←1 to n Do
+9
+Read(arr[i]);
+10
+EndFor;
+11
+12
+Write (" Enter value to count: ");
+13
+Read(target);
+14
+15
+count
+←
+0;
+16
+For i ←1 to n Do
+17
+If (arr[i] = target) Then
+18
+count
+←
+count + 1;
+19
+End If;
+20
+EndFor;
+21
+22
+Write(target , " appears ", count , " times ");
+23
+End;
+26
+Exam Revision 2024
+USTHB L1 Mathematics - Algorithms
+9
+Part 9: Problem-Solving Methodology
+9.1
+5-Step Method
+9.1.1
+Step 1: Understand the Problem
+Ask:
+• What information is given? (inputs)
+• What must I find? (outputs)
+• What are the constraints?
+• What are the edge cases? (empty input, negative numbers, zero)
+9.1.2
+Step 2: Identify Variables
+Ask: “What memory cells do I need? ”
+9.1.3
+Step 3: Plan Logic in English
+Write outline in simple English:
+1. Get input from user
+2. Validate input
+3. Process the data
+4. Calculate result
+5. Display output
+9.1.4
+Step 4: Write Formal Algorithm
+Translate outline to pseudocode
+9.1.5
+Step 5: Test with Examples
+Manually execute with:
+• Normal case (typical input)
+• Edge cases (0, 1, negative, empty)
+• Boundary cases (first element, last element)
+9.2
+Common Problem Patterns
+Pattern 1: Count Something
+1
+count
+←
+0;
+2
+For i ←1 to n Do
+3
+If (condition) Then
+4
+count
+←
+count + 1;
+5
+End If;
+6
+EndFor;
+27
+Exam Revision 2024
+USTHB L1 Mathematics - Algorithms
+Pattern 2: Sum Elements
+1
+sum
+←
+0;
+2
+For i ←1 to n Do
+3
+sum
+←
+sum + array[i];
+4
+EndFor;
+Pattern 3: Find Max/Min
+1
+max
+←
+array [1];
+2
+For i ←2 to n Do
+3
+If (array[i] > max) Then
+4
+max
+←
+array[i];
+5
+End If;
+6
+EndFor;
+Pattern 4: Search with Early Exit
+1
+found
+←
+false;
+2
+i ←
+1;
+3
+While (i <= n) AND (found = false) Do
+4
+If (array[i] = target) Then
+5
+found
+←
+true;
+6
+position
+←i;
+7
+End If;
+8
+i ←i + 1;
+9
+EndWhile;
+Pattern 5: Check Property (All Elements)
+1
+is_valid
+←
+true;
+2
+i ←
+1;
+3
+While (i <= n) AND (is_valid = true) Do
+4
+If (fails condition) Then
+5
+is_valid
+←
+false;
+6
+End If;
+7
+i ←i + 1;
+8
+EndWhile;
+28
+Exam Revision 2024
+USTHB L1 Mathematics - Algorithms
+10
+Part 10: Exam Tips & Common Mistakes
+10.1
+What Examiners Reward
+• Clear variable declarations
+• Proper pseudocode syntax
+• Correct logic
+• Edge case handling
+• Organized structure
+• Early exit optimization in loops
+10.2
+What Examiners Penalize
+• No declarations or wrong types
+• Mixing programming language with pseudocode
+• Infinite loops
+• Array index out of bounds
+• Using = for assignment instead of arrow
+• Not handling edge cases (n=0, n=1, negatives)
+10.3
+Common Mistakes
+WARNING: Not Initializing
+1
+// WRONG
+2
+For i ←1 to 10 Do
+3
+sum
+←
+sum + array[i];
+// sum undefined!
+4
+EndFor;
+5
+6
+// FIX
+7
+sum
+←
+0;
+// Initialize
+FIRST
+8
+For i ←1 to 10 Do
+9
+sum
+←
+sum + array[i];
+10
+EndFor;
+29
+Exam Revision 2024
+USTHB L1 Mathematics - Algorithms
+WARNING: Infinite Loop
+1
+// WRONG
+2
+i ←
+1;
+3
+While (i <= 10) Do
+4
+Write(i);
+5
+// Forgot to update i!
+6
+EndWhile;
+7
+8
+// FIX
+9
+i ←
+1;
+10
+While (i <= 10) Do
+11
+Write(i);
+12
+i ←i + 1;
+13
+EndWhile;
+WARNING: Array Index Out of Bounds
+1
+// WRONG - array size 10, accessed 0-10
+2
+Var arr [10] : integer;
+3
+For i ←0 to 10 Do
+4
+arr[i] ←i;
+5
+EndFor;
+6
+7
+// FIX - arrays are 1-indexed
+8
+Var arr [10] : integer;
+9
+For i ←1 to 10 Do
+10
+arr[i] ←i;
+11
+EndFor;
+WARNING: Off-by-One Errors
+1
+// WRONG - Bubble sort inner loop
+2
+For j ←1 to n Do
+// Goes out of bounds!
+3
+If (arr[j] > arr[j+1]) Then
+4
+5
+// FIX
+6
+For j ←1 to n-i Do
+// Correct
+boundary
+7
+If (arr[j] > arr[j+1]) Then
+10.4
+Pre-Submission Checklist
+1. Algorithm name given
+2. All variables declared with types
+3. All variables initialized before use
+30
+Exam Revision 2024
+USTHB L1 Mathematics - Algorithms
+4. All constants defined
+5. Begin and End present
+6. Used arrow (←) for assignment
+7. Used = for comparison
+8. All loops have End statements
+9. All If statements have End If
+10. Loop counters updated (for While loops)
+11. Array indices within bounds
+12. Edge cases handled (0, 1, negative, empty)
+13. Manual test with simple example
+10.5
+Time Management
+• Simple problems (10 min): I/O, arithmetic
+• Medium problems (15 min): Loops, conditionals, arrays
+• Complex problems (20+ min): 2D arrays, sorting, special algorithms
+31
+Exam Revision 2024
+USTHB L1 Mathematics - Algorithms
+11
+Part 11: Quick Reference
+11.1
+Algorithm Template
+1
+Algorithm
+Problem_Name;
+2
+Var var1 , var2 : type;
+3
+array1[size] : type;
+4
+Const constant1 = value;
+5
+6
+Begin
+7
+// Input
+8
+// Processing
+9
+// Output
+10
+End;
+11.2
+Data Types
+Type
+Keyword
+Whole numbers
+integer
+Decimals
+float
+Letters
+character
+True/False
+boolean
+Text
+string
+11.3
+Operators
+Arithmetic:
++, -, *, /, div, mod, ^
+Comparison:
+>, <, ≥, ≤, =, ̸=
+Logical: AND, OR, NOT
+11.4
+Control Structures
+1
+If (condition) Then ...
+End If;
+2
+If (cond) Then ... Else ... End If;
+3
+For i ←1 to n Do ...
+EndFor;
+4
+While (condition) Do ... EndWhile;
+5
+Do ...
+While (condition);
+11.5
+I/O
+1
+Read(variable);
+2
+Write (" text", variable);
+11.6
+Arrays
+1
+Var arr[size] : type;
+// 1D
+2
+Var matrix[r][c] : type;
+// 2D
+3
+arr[index] ←
+value;
+32
+Exam Revision 2024
+USTHB L1 Mathematics - Algorithms
+11.7
+Useful Functions
+1
+length(string)
+// Returns string length
+2
+sqrt(n)
+// Square root
+3
+abs(n)
+// Absolute value
+11.8
+Common Formulas
+• LCM(a, b) =
+a×b
+GCD(a,b)
+• Check prime: test divisors up to √n
+• Reverse number: use mod 10 and div 10
+• Palindrome: compare position i with position n −i + 1
+33
+Exam Revision 2024
+USTHB L1 Mathematics - Algorithms
+12
+Conclusion
+You now have complete understanding of:
+• Algorithm fundamentals
+• Variables, types, and operations
+• Control flow (If, Switch)
+• Loops (For, While, Do-While)
+• Arrays (1D and 2D)
+• Special algorithms (primes, palindromes, Fibonacci, GCD, sorting)
+• Problem-solving methodology
+• Exam strategies and common pitfalls
+Remember: Practice is key. The more algorithms you write, the clearer your think-
+ing becomes.
+Key Takeaways:
+1. Always initialize variables before using them
+2. Always validate input (handle edge cases)
+3. Use early exit in loops when possible
+4. Test your algorithm with multiple cases
+5. Check array bounds carefully
+Good luck on your exam!
+USTHB L1 Mathematics - Algorithms Course
+34
+
+================================================================================
+FILE: Week_5.pdf
+================================================================================
+Lecture Notes :
+Algorithms and Data Structures I
+Functions and Recursion
+Academic year : 2025-2026.
+1st Year Mathematics License,
+Faculty of Mathematics,
+University of Science and Technology Houari Boumediene.
+Content :
+• Working with Functions
+• Recursion and Advanced Function Concepts
+1/46
+Functions in Algorithms
+Introduction to Functions
+• In programming and algorithms, functions are essential building blocks.
+• A function is a self-contained block of code that performs a specific task.
+• Functions help in organizing code, modularizing logic, and promoting code
+reuse.
+• Key components of a function:
+• Name: Identifier for the function.
+• Parameters: Input values that the function uses.
+• Return type: Data type of the value the function returns.
+• Body: The code that defines what the function does.
+2/46
+Introduction to Functions
+Scenario: Finding Maximum in Multiple Places
+• Imagine you are working on a program that involves processing data from
+different sources.
+• In various parts of your program, you need to compare and find the maximum of
+two numbers.
+• Without using functions, you would need to repeat the same code for finding the
+maximum at every place in your program.
+• This leads to code duplication, making your program harder to maintain and
+understand.
+3/46
+Defining Functions
+Example: Finding the Maximum of Two Numbers
+integer Function Find_Maximum(a: integer, b: integer)
+Begin
+If a > b Then
+Return a;
+Else
+Return b;
+EndIf
+End;
+• Find_Maximum is the function name.
+• a and b are parameters.
+• The function returns the maximum of a and b.
+• Functions must be defined before Begin.
+4/46
+Calling Functions
+• To use a function, you call it by its name and provide values for its parameters.
+• Example of calling the Find_Maximum function:
+Calling the Find_Maximum Function
+x <- 7;
+y <- 12;
+maxValue <- Find_Maximum(x, y);
+• After the call, maxValue will contain the result of the function.
+5/46
+Using Find_Maximum Function in Main Algorithm
+Using Find_Maximum in Main Algorithm
+Algorithm Main_Algorithm:
+Var :
+// Define the variables
+function ... // Define the function
+Begin
+// Using Find_Maximum function
+x <- 7;
+y <- 12;
+maxValue1 <- Find_Maximum(x, y)
+// More code...
+// Using Find_Maximum again
+a <- 25;
+b <- 18;
+maxValue2 <- Find_Maximum(a, b);
+// Continue with the main algorithm
+End
+6/46
+Divide and Conquer: Sorting
+Students
+Sorting Students: Problem Statement
+Problem Statement
+• Given a list of students with their names and exam scores.
+• Tasks to perform:
+1. Sort the students in ascending order based on their exam scores.
+2. Identify the top-performing student.
+3. Separate students into two groups: those who passed (scored above a certain
+threshold) and those who failed.
+• We will use the ”Divide and Conquer” approach by implementing each task as a
+separate function.
+7/46
+Divide and Conquer using functions
+Functions for Sorting Students
+float[] function
+Sort_Students_By_Score( studentList: float[])
+begin
+// Implementation to sort students by exam scores
+// Return the sorted student list
+end;
+float[] function
+Identify_Top_Performer(studentList: float[])
+begin
+// Implementation to find the top-performing student
+// Return the student information
+end;
+float[],float[] function Separate_Passed_Failed( studentList:float[],
+threshold: integer)
+begin
+// Implementation to separate students based on a threshold
+// Return two lists: passedStudents, failedStudents
+end;
+• Each function addresses a specific subproblem related to sorting students.
+• The code is organized and modular, adhering to the ”Divide and Conquer” principle.
+8/46
+Using Divide and Conquer Functions in Main Algorithm
+Using Divide and Conquer Functions in Main Algorithm
+Algorithm Main_Algorithm
+// Declaration
+Begin
+// Some code...
+// Using Sort_Students_By_Score function
+sortedStudents <- Sort_Students_By_Score(studentData);
+// Using Identify_Top_Performer function
+topPerformer <- Identify_Top_Performer(sortedStudents);
+// Using Separate_Passed_Failed function
+threshold <- 70;
+// Example threshold
+(passedStudents, failedStudents) <- Separate_Passed_Failed(sortedStudents, threshold);
+// Continue with the main algorithm
+End
+• The main algorithm uses the functions to solve individual subproblems related to
+sorting students.
+• Each function contributes to the overall solution, promoting code modularity and
+readability.
+9/46
+Function Types and Local
+Variables
+Function and Parameters Types
+• Functions can have different return types and parameter types.
+• Common function types include:
+• integer: Integer type
+• float: Floating-point type
+• char: Character type
+• bool: Boolean type
+• integer[]: Integer array
+• float[]: Floating-point array
+• char[]: Character array
+• bool[]: Boolean array
+• ... (and other custom types)
+10/46
+Local Variables in Functions
+• Local variables are declared inside a function and are only accessible within that
+function.
+• The keyword var is used to declare local variables.
+• Example:
+integer function CalculateSum( a:integer,
+b:integer)
+var
+result: integer;
+begin
+result <- a+b;
+return result;
+end;
+• Here, result is a local variable.
+11/46
+Local vs. Global Variables
+• Local Variables:
+• Declared inside a function.
+• Accessible only within that function.
+• Separate instances for each function call.
+• Global Variables:
+• Declared outside any function.
+• Accessible throughout the program.
+• Single instance shared across the entire program.
+• It’s important to understand the scope and lifetime of variables.
+12/46
+Local vs. Global Variables: Example
+Algorithm Example;
+var globalVariable:integer;
+// Global variable
+integer function ExampleFunction(a:integer)
+var:
+globalVariable:integer;
+// Local variable with the same name
+begin
+globalVariable <- 7;
+result <- globalVariable + a;
+return result;
+end;
+Begin // Main algorithm
+globalResult <- 10;
+globalResult <- ExampleFunction(9);
+End
+• In this example, there is a global variable named globalVariable and a local variable with the same name
+inside the ExampleFunction.
+• The local variable’s scope is limited to the function, and it does not affect the global variable with the same
+name.
+• After the function call, globalResult will contain the result of the computation.
+13/46
+Function with No Return: Example
+Example: Consider a function that prints the sum of two integers without returning a
+value.
+Function Definition:
+void function PrintSum(a: integer, b: integer)
+var result: integer;
+begin
+result <- a + b;
+print("Sum: ", result);
+// No explicit return statement
+end;
+14/46
+Function with No Return: Explanation
+Explanation:
+• In some cases, a function may not need to return a value.
+• Such functions are declared with the return type ‘void‘.
+• The logic is performed within the function, and there’s no need for a return statement.
+• They are used for actions or operations that don’t produce a result to be used elsewhere.
+15/46
+Example Usage: Function with No Return
+Example Usage:
+// Calling the function with no return
+PrintSum(5, 7);
+// The function prints the sum but doesn't return a value.
+16/46
+
+================================================================================
+FILE: Pointers.pdf
+================================================================================
+Lecture Notes :
+Algorithms and Data Structures II
+Pointers
+Academic year : 2024-2025.
+1st Year Mathematics License,
+Faculty of Mathematics,
+University of Science and Technology Houari Boumediene.
+Content :
+• Introduction to Pointers
+• Working with pointers
+1/16
+Pointers
+Introduction to Pointers - Motivation
+Why Are Pointers Important?
+• Pointers allow direct memory access and manipulation, offering efficiency, flexibility,
+and control.
+• Essential for dynamic memory management, implementing complex data structures,
+and efficient algorithms.
+2/16
+Understanding Pointers Without Them
+The World Without Pointers
+• Static or stack allocation limits flexibility and scalability.
+• Challenges in implementing dynamic data structures and inefficiency in data
+manipulation.
+3/16
+Definition and Basic Operations of Pointers
+What is a Pointer?
+• A variable that stores the memory address of another variable.
+•
+4/16
+Declaring a Pointer
+Syntax
+• Declaration:
+ptr:*integer;.
+• Get the memory address of a given variable: ptr <-&var;
+Example
+Algorithm pointerExample;
+var
+myPointer: *integer;
+myInteger:integer;
+Begin
+myInteger <- 10;
+ptr <- &myInteger;
+write("The memory adress of the variable is :",ptr);
+write("The value of the pointed memory cell is",*ptr)
+End
+5/16
+Initializing and Managing Pointers
+Working with Pointers
+• Always initialize pointers ( ptr = null;) before using it.
+• You can free a pointer ( ptr = null;)
+6/16
+Exercise: Swap Two Variables Using Pointers
+Problem Statement:
+• Write an algorithm to swap the values of two integer variables using pointers.
+7/16
+Exercise: Swap Two Variables Using Pointers
+Problem Statement:
+• Write an algorithm to swap the values of two integer variables using pointers.
+Instructions:
+• Declare two integer variables and assign initial values.
+• Declare two integer pointers and assign their addresses to the addresses of the variables.
+• Use pointer arithmetic and dereferencing to swap the values stored at the memory
+locations.
+• Print the values of the variables before and after swapping to verify the correctness of
+the swap.
+7/16
+Solution
+Algorithm swap;
+a,b,temp : integer;
+ptr_a,ptr_b : *integer;
+Begin
+// Swap the values using pointer arithmetic
+a<-10;
+b<-25;
+ptr_a<-&a;
+ptr_b<-&b;
+temp <- *ptr_a;
+*ptr_a <- *ptr_b;
+*ptr_b <- temp;
+write("a=",*ptr_a,"b=",*ptr_b);
+End
+8/16
+Passing Pointers to Functions
+Introduction:
+• Pointers can be passed as arguments to functions.
+9/16
+Passing Pointers to Functions
+Introduction:
+• Pointers can be passed as arguments to functions.
+• Passing pointers allows functions to directly access and modify variables from the
+calling scope.
+9/16
+Passing Pointers to Functions
+Introduction:
+• Pointers can be passed as arguments to functions.
+• Passing pointers allows functions to directly access and modify variables from the
+calling scope.
+• This method is commonly used for passing large data structures efficiently and for
+implementing functions that modify multiple variables.
+9/16
+Passing Pointers to Functions
+Introduction:
+• Pointers can be passed as arguments to functions.
+• Passing pointers allows functions to directly access and modify variables from the
+calling scope.
+• This method is commonly used for passing large data structures efficiently and for
+implementing functions that modify multiple variables.
+9/16
+Syntax
+• Declare function parameters as pointer types to indicate that they will receive
+memory addresses.
+Syntax
+• Declare function parameters as pointer types to indicate that they will receive
+memory addresses.
+• Pass the addresses of variables (using the & operator) as arguments when calling
+the function.
+Syntax
+• Declare function parameters as pointer types to indicate that they will receive
+memory addresses.
+• Pass the addresses of variables (using the & operator) as arguments when calling
+the function.
+• Inside the function, use pointer dereferencing (*) to access and modify the
+values at the memory addresses passed.
+10/16
+Example
+void
+swap( a:*integer, b:*integer)
+var temp:integer;
+begin
+temp=*a;
+*a=*b;
+*b=temp;
+end
+\\ Calling the function inside the algorithm
+x=10;
+y=25;
+swap(&x,&y);
+write("x=",x," y=",y);
+11/16
+Arrays as Pointers
+Understanding Arrays as Pointers:
+• An array name acts as a pointer to the first element of the array.
+12/16
+Arrays as Pointers
+Understanding Arrays as Pointers:
+• An array name acts as a pointer to the first element of the array.
+• The array name represents the memory address of the first element in the array.
+12/16
+Arrays as Pointers
+Understanding Arrays as Pointers:
+• An array name acts as a pointer to the first element of the array.
+• The array name represents the memory address of the first element in the array.
+• This pointer behavior allows for easy manipulation and traversal of array elements.
+12/16
+Arrays as Pointers
+Understanding Arrays as Pointers:
+• An array name acts as a pointer to the first element of the array.
+• The array name represents the memory address of the first element in the array.
+• This pointer behavior allows for easy manipulation and traversal of array elements.
+Using Arrays as Pointers:
+• To access elements of the array, you can use array indexing or pointer arithmetic.
+12/16
+Arrays as Pointers
+Understanding Arrays as Pointers:
+• An array name acts as a pointer to the first element of the array.
+• The array name represents the memory address of the first element in the array.
+• This pointer behavior allows for easy manipulation and traversal of array elements.
+Using Arrays as Pointers:
+• To access elements of the array, you can use array indexing or pointer arithmetic.
+• When passing arrays to functions, you can pass them directly as pointers to the first
+element.
+12/16
+Arrays as Pointers
+Understanding Arrays as Pointers:
+• An array name acts as a pointer to the first element of the array.
+• The array name represents the memory address of the first element in the array.
+• This pointer behavior allows for easy manipulation and traversal of array elements.
+Using Arrays as Pointers:
+• To access elements of the array, you can use array indexing or pointer arithmetic.
+• When passing arrays to functions, you can pass them directly as pointers to the first
+element.
+• Pointer arithmetic can be used to iterate over array elements efficiently.
+12/16
+Example
+Algorithm printArray;
+var
+v: integer[5];
+p:*integer;
+Begin
+v<-[1,2,3,4,5];
+for (p<-v to p+4) do
+write(*p);
+endfor;
+End
+13/16
+Practice !
+Exercice
+Write a function called Sort that orders the values of three integer variables in
+ascending order. This function will have three parameters and will return 0 if the
+variables were already in order (and thus the function will not have modified the
+order), or 1 if it actually ordered the variables.
+Test the Sort function, which should order the values of the variables received from
+the main function.
+Example: if in the main Algorithm we have X=3, Y=1, Z=2, after calling the Sort
+function we obtain: X=1, Y=2, Z=3.
+14/16
+Recap
+Key Points Covered:
+• Pointers allow direct memory access and manipulation, offering efficiency, flexibility,
+and control.
+• Understanding pointers is essential for dynamic memory management, implementing
+complex data structures, and efficient algorithms.
+• We learned how to declare and initialize pointers, perform basic operations such as
+dereferencing and pointer arithmetic, and pass pointers to functions.
+• Arrays can be treated as pointers, providing a convenient way to access and manipulate
+array elements.
+15/16
+Practice using Pointers !
+Practice is Key:
+• It’s important to practice using pointers in various contexts to solidify understanding
+and gain proficiency.
+• The provided exercises offer opportunities to apply pointer concepts and enhance
+problem-solving skills.
+Further Exploration:
+• Pointers are a fundamental concept in computer science and have many advanced
+applications. Further exploration and practice will deepen understanding and open
+doors to more complex programming tasks.
+16/16
+
+================================================================================
+FILE: Struct Records.pdf
+================================================================================
+Lecture Notes :
+Algorithms and Data Structures II
+Types and structures : records
+Academic year : 2024-2025.
+1st Year Mathematics License,
+Faculty of Mathematics,
+University of Science and Technology Houari Boumediene.
+Content :
+• Working with struct (records),
+• Working with enumeration.
+1/9
+Custom Data Types
+Introduction
+• In algorithm design, custom types are crucial for organizing and managing data
+effectively.
+• Custom types enhance code readability, structure, and overall maintainability.
+2/9
+Enumerations
+• Enumerations provide a way to define a set of named constants representing distinct
+values.
+• They make the code more expressive and self-documenting.
+• Example:
+enumeration Days { Monday, Tuesday, Wednesday, Thursday,
+Friday, Saturday, Sunday }
+3/9
+Enumerations in Pseudocode
+Example: Days of the Week Enumeration
+enumeration Days { Monday, Tuesday, Wednesday, Thursday,
+Friday, Saturday, Sunday }
+Usage in Algorithms
+void function CheckDayType(day: Days)
+begin
+If day = Days.Saturday OR day = Days.Friday Then
+Write("It’s a weekend!");
+Else
+Write("It’s a weekday.");
+EndIf;
+end;
+4/9
+Structs
+• Overview
+• Structs allow grouping related data under a single name.
+• Essential for organizing complex information in algorithms.
+• Syntax in Pseudocode
+• Define a structure using the struct keyword.
+• Specify fields inside the struct.
+• Example: struct Student { name:
+string; grade:
+integer; }
+5/9
+structs and Structs
+• Overview
+• structs and structs allow grouping related data under a single name.
+• Essential for organizing complex information in algorithms.
+• Syntax in Pseudocode
+• Define a struct using the struct keyword.
+• Specify fields inside the struct.
+• Example: struct Student { name:
+string; grade:
+integer; }
+6/9
+Structs
+Example: Player struct
+Algorithm displayStudentInfo;
+struct Player {
+name: string;
+numberOfGoals: integer;
+};
+var:
+player1: Student;
+begin
+player.name<-"Mahrez";
+player.numberOfGoal<-10;
+write("The Player ", player.name, " scored
+",player.numberOfGoals, " goals this season");
+end
+7/9
+Array of Football Players: Example
+Problem Statement:
+• We have a team of 100 football players, and we want to store and display information
+for each player.
+• Each player has a name, team, position, and the number of goals scored.
+• We need to create an array of players and fill it with user input.
+Algorithm Structure:
+• Define a struct named ‘Player‘ with fields: name, team, position, numberOfGoals.
+• Declare an array of ‘Player‘ structs to store information for each player.
+• Use a loop to fill the array with user input for each player.
+• Display the details of each player after filling the array.
+8/9
+Example: Array of Football Players
+Algorithm FillPlayerArray;
+struct Player {
+name: string;
+team: string;
+position: string;
+numberOfGoals: integer;
+};
+var:
+players: array[1..100] of Player;
+i: integer;
+Begin
+// Filling information for each player in the array
+For i <- 1 to 100 do
+Write("Enter details for Player ", i);
+Write("Name: ");
+Read(players[i].name);
+Write("Team: ");
+Read(players[i].team);
+Write("Position: ");
+Read(players[i].position);
+Write("Number of Goals: ");
+Read(players[i].numberOfGoals);
+EndFor
+9/9
