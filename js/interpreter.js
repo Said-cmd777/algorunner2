@@ -7,12 +7,12 @@ class AlgoInterpreter {
     this.output = output;
   }
 
-  run(source) {
+  async run(source) {
     const lexer = new Lexer(source);
     const tokens = lexer.tokens();
     const parser = new Parser(tokens);
     const program = parser.parse();
-    program.run(this.input, this.output);
+    await program.run(this.input, this.output);
   }
 }
 
@@ -945,9 +945,11 @@ class Program {
     this.enums = enums;
   }
 
-  run(input, output) {
+  async run(input, output) {
     const ctx = new Context(this.varTypes, this.functions);
-    this.stmts.forEach((s) => s.exec(ctx, input, output));
+    for (const s of this.stmts) {
+      await s.exec(ctx, input, output);
+    }
   }
 
   toC() {
@@ -963,10 +965,10 @@ class VarRef {
     this.fields = fields;
   }
 
-  eval(ctx) {
+  async eval(ctx) {
     let val = ctx.get(this.name);
     for (const idxExpr of this.indices) {
-      const idx = parseInt(evalExpr(idxExpr, ctx), 10);
+      const idx = parseInt(await evalExpr(idxExpr, ctx), 10);
       if (Array.isArray(val)) {
         if (idx <= 0 || idx >= val.length) throw new Error(`Index ${idx} out of range for ${this.name}`);
         val = val[idx];
@@ -984,7 +986,7 @@ class VarRef {
     return val;
   }
 
-  assign(ctx, value) {
+  async assign(ctx, value) {
     if (!this.indices.length && !this.fields.length) {
       ctx.set(this.name, value);
       return;
@@ -993,7 +995,7 @@ class VarRef {
     if (!Array.isArray(arr)) arr = [null];
     let current = arr;
     for (let i = 0; i < this.indices.length; i++) {
-      const idx = parseInt(evalExpr(this.indices[i], ctx), 10);
+      const idx = parseInt(await evalExpr(this.indices[i], ctx), 10);
       if (idx < 1) throw new Error("Array indices are 1-based");
       while (current.length <= idx) current.push(null);
       if (i === this.indices.length - 1) {
@@ -1023,9 +1025,9 @@ class Assign {
     this.expr = expr;
   }
 
-  exec(ctx) {
-    const value = evalExpr(this.expr, ctx);
-    this.target.assign(ctx, value);
+  async exec(ctx) {
+    const value = await evalExpr(this.expr, ctx);
+    await this.target.assign(ctx, value);
   }
 }
 
@@ -1034,8 +1036,8 @@ class Return {
     this.expr = expr;
   }
 
-  exec(ctx) {
-    ctx.returnValue = evalExpr(this.expr, ctx);
+  async exec(ctx) {
+    ctx.returnValue = await evalExpr(this.expr, ctx);
     ctx.shouldReturn = true;
   }
 }
@@ -1045,21 +1047,38 @@ class Read {
     this.targets = targets;
   }
 
-  exec(ctx, input) {
-    const values = [];
-    while (values.length < this.targets.length) {
-      const next = input(ctx.lastPrompt);
-      if (next === undefined || next === "") {
-        throw new Error("Not enough input values. Provide more numbers in the Input box.");
-      }
-      const parts = String(next).split(/\s+/).filter(Boolean);
-      values.push(...parts);
+  async exec(ctx, input, output) {
+    if (!ctx.inputBuffer) {
+      ctx.inputBuffer = [];
     }
-    this.targets.forEach((t, i) => {
-      const raw = values[i] ?? "";
-      const value = ctx.castForType(t.name, raw);
-      t.assign(ctx, value);
-    });
+    
+    for (const t of this.targets) {
+      let valid = false;
+      while (!valid) {
+        if (ctx.inputBuffer.length === 0) {
+          const next = await input(ctx.lastPrompt);
+          if (next === undefined || String(next).trim() === "") {
+            throw new Error("Not enough input values. Provide more numbers in the Input box.");
+          }
+          const parts = String(next).split(/\s+/).filter(Boolean);
+          ctx.inputBuffer.push(...parts);
+        }
+        
+        const raw = ctx.inputBuffer.shift();
+        try {
+          const value = ctx.castForType(t.name, raw);
+          await t.assign(ctx, value);
+          valid = true;
+        } catch (err) {
+          // If input is invalid, alert the user and let them try again interactively (if possible)
+          if (output) {
+            output(`\\u26A0\\uFE0F ${err.message}. Please try again.`);
+          } else {
+            throw err;
+          }
+        }
+      }
+    }
   }
 }
 
@@ -1068,8 +1087,11 @@ class Write {
     this.args = args;
   }
 
-  exec(ctx, _input, output) {
-    const parts = this.args.map((a) => String(evalExpr(a, ctx)));
+  async exec(ctx, _input, output) {
+    const parts = [];
+    for (const a of this.args) {
+      parts.push(String(await evalExpr(a, ctx)));
+    }
     const text = parts.join("");
     ctx.lastPrompt = text;
     output(text);
@@ -1083,17 +1105,17 @@ class If {
     this.elseBody = elseBody;
   }
 
-  exec(ctx, input, output) {
-    if (truthy(evalExpr(this.cond, ctx))) {
-      this.body.forEach((s) => {
-        s.exec(ctx, input, output);
-        if (ctx.shouldReturn) return;
-      });
+  async exec(ctx, input, output) {
+    if (truthy(await evalExpr(this.cond, ctx))) {
+      for (const s of this.body) {
+        await s.exec(ctx, input, output);
+        if (ctx.shouldReturn) break;
+      }
     } else {
-      this.elseBody.forEach((s) => {
-        s.exec(ctx, input, output);
-        if (ctx.shouldReturn) return;
-      });
+      for (const s of this.elseBody) {
+        await s.exec(ctx, input, output);
+        if (ctx.shouldReturn) break;
+      }
     }
   }
 }
@@ -1106,17 +1128,17 @@ class For {
     this.body = body;
   }
 
-  exec(ctx, input, output) {
-    const start = parseInt(evalExpr(this.start, ctx), 10);
-    const end = parseInt(evalExpr(this.end, ctx), 10);
+  async exec(ctx, input, output) {
+    const start = parseInt(await evalExpr(this.start, ctx), 10);
+    const end = parseInt(await evalExpr(this.end, ctx), 10);
     const step = end >= start ? 1 : -1;
     let i = start;
     while ((i <= end && step > 0) || (i >= end && step < 0)) {
-      this.variable.assign(ctx, i);
-      this.body.forEach((s) => {
-        s.exec(ctx, input, output);
-        if (ctx.shouldReturn) return;
-      });
+      await this.variable.assign(ctx, i);
+      for (const s of this.body) {
+        await s.exec(ctx, input, output);
+        if (ctx.shouldReturn) break;
+      }
       if (ctx.shouldReturn) return;
       i += step;
     }
@@ -1129,12 +1151,12 @@ class While {
     this.body = body;
   }
 
-  exec(ctx, input, output) {
-    while (truthy(evalExpr(this.cond, ctx))) {
-      this.body.forEach((s) => {
-        s.exec(ctx, input, output);
-        if (ctx.shouldReturn) return;
-      });
+  async exec(ctx, input, output) {
+    while (truthy(await evalExpr(this.cond, ctx))) {
+      for (const s of this.body) {
+        await s.exec(ctx, input, output);
+        if (ctx.shouldReturn) break;
+      }
       if (ctx.shouldReturn) return;
     }
   }
@@ -1146,14 +1168,14 @@ class DoWhile {
     this.cond = cond;
   }
 
-  exec(ctx, input, output) {
+  async exec(ctx, input, output) {
     while (true) {
-      this.body.forEach((s) => {
-        s.exec(ctx, input, output);
-        if (ctx.shouldReturn) return;
-      });
+      for (const s of this.body) {
+        await s.exec(ctx, input, output);
+        if (ctx.shouldReturn) break;
+      }
       if (ctx.shouldReturn) return;
-      if (!truthy(evalExpr(this.cond, ctx))) break;
+      if (!truthy(await evalExpr(this.cond, ctx))) break;
     }
   }
 }
@@ -1164,14 +1186,14 @@ class RepeatUntil {
     this.cond = cond;
   }
 
-  exec(ctx, input, output) {
+  async exec(ctx, input, output) {
     while (true) {
-      this.body.forEach((s) => {
-        s.exec(ctx, input, output);
-        if (ctx.shouldReturn) return;
-      });
+      for (const s of this.body) {
+        await s.exec(ctx, input, output);
+        if (ctx.shouldReturn) break;
+      }
       if (ctx.shouldReturn) return;
-      if (truthy(evalExpr(this.cond, ctx))) break;
+      if (truthy(await evalExpr(this.cond, ctx))) break;
     }
   }
 }
@@ -1183,25 +1205,25 @@ class Switch {
     this.defaultBody = defaultBody;
   }
 
-  exec(ctx, input, output) {
-    const value = evalExpr(this.expr, ctx);
+  async exec(ctx, input, output) {
+    const value = await evalExpr(this.expr, ctx);
     let matched = false;
     for (const c of this.cases) {
-      const caseVal = evalExpr(c.value, ctx);
+      const caseVal = await evalExpr(c.value, ctx);
       if (value === caseVal) {
         matched = true;
-        c.body.forEach((s) => {
-          s.exec(ctx, input, output);
-          if (ctx.shouldReturn) return;
-        });
+        for (const s of c.body) {
+          await s.exec(ctx, input, output);
+          if (ctx.shouldReturn) break;
+        }
         break;
       }
     }
     if (!matched && this.defaultBody.length > 0) {
-      this.defaultBody.forEach((s) => {
-        s.exec(ctx, input, output);
-        if (ctx.shouldReturn) return;
-      });
+      for (const s of this.defaultBody) {
+        await s.exec(ctx, input, output);
+        if (ctx.shouldReturn) break;
+      }
     }
   }
 }
@@ -1539,11 +1561,11 @@ function truthy(value) {
   return Boolean(value);
 }
 
-function evalExpr(node, ctx) {
+async function evalExpr(node, ctx) {
   if (node instanceof Literal) return node.value;
-  if (node instanceof VarRef) return node.eval(ctx);
+  if (node instanceof VarRef) return await node.eval(ctx);
   if (node instanceof UnaryOp) {
-    const v = evalExpr(node.expr, ctx);
+    const v = await evalExpr(node.expr, ctx);
     if (node.op === "-") return -v;
     if (node.op === "NOT") return !truthy(v);
     if (node.op === "&") {
@@ -1556,13 +1578,13 @@ function evalExpr(node, ctx) {
     }
     if (node.op === "*") {
       // Dereference: get value at address
-      const addr = evalExpr(node.expr, ctx);
+      const addr = await evalExpr(node.expr, ctx);
       return ctx.dereference(addr);
     }
   }
   if (node instanceof BinOp) {
-    const a = evalExpr(node.left, ctx);
-    const b = evalExpr(node.right, ctx);
+    const a = await evalExpr(node.left, ctx);
+    const b = await evalExpr(node.right, ctx);
     if (node.op === "+") return a + b;
     if (node.op === "-") return a - b;
     if (node.op === "*") return a * b;
@@ -1582,7 +1604,7 @@ function evalExpr(node, ctx) {
   }
   if (node instanceof Call) {
     if (node.name === "SQRT") {
-      const v = evalExpr(node.args[0], ctx);
+      const v = await evalExpr(node.args[0], ctx);
       return Math.sqrt(v);
     }
     // Function call
@@ -1597,16 +1619,17 @@ function evalExpr(node, ctx) {
       throw new Error(`Function ${node.name} expects ${funcDef.params.length} arguments, got ${node.args.length}`);
     }
     
-    funcDef.params.forEach((param, i) => {
-      const argValue = evalExpr(node.args[i], ctx);
+    for (let i = 0; i < funcDef.params.length; i++) {
+      const param = funcDef.params[i];
+      const argValue = await evalExpr(node.args[i], ctx);
       funcCtx.set(param.name, argValue);
-    });
+    }
     
     // Execute function body
-    funcDef.body.forEach((s) => {
-      s.exec(funcCtx, () => {}, () => {});
-      if (funcCtx.shouldReturn) return;
-    });
+    for (const s of funcDef.body) {
+      await s.exec(funcCtx, () => {}, () => {});
+      if (funcCtx.shouldReturn) break;
+    }
     
     return funcCtx.returnValue || 0;
   }

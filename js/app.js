@@ -5,15 +5,10 @@
 //           Web Worker interactive terminal
 // ─────────────────────────────────────────
 
-// ── Feature detection ────────────────────────────────────────────────────
-const HAS_SAB = typeof SharedArrayBuffer !== 'undefined';
-let _sabWarningShown = false;
-
-// ── Worker state ─────────────────────────────────────────────────────────
-let _worker = null;
-let _sab = null;
+// ── Execution state ────────────────────────────────────────────────────────
 let _running = false;
 let _lastOutputDiv = null;   // reference to the last output-line div (for inline input)
+let _inputResolver = null;   // dynamic resolver to unblock interpreter during Read()
 
 // ── Inline error state (CodeMirror markers + widgets) ────────────────────
 const _errState = {
@@ -141,190 +136,98 @@ function setRunningState(on) {
 }
 
 function terminateWorker() {
-  if (_worker) {
-    _worker.terminate();
-    _worker = null;
-    _sab = null;
+  _running = false;
+  if (_inputResolver) {
+    _inputResolver(undefined);
+    _inputResolver = null;
   }
   setRunningState(false);
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-//  SYNCHRONOUS FALLBACK  (used when SharedArrayBuffer is unavailable)
-// ═══════════════════════════════════════════════════════════════════════════
-
-function runSync(processed, inputRaw) {
+async function runAsync(processed, inputRaw) {
   const outputBox = document.getElementById("output-box");
   const statusBadge = document.getElementById("output-status");
 
-  const tokens = String(inputRaw).trim().split(/\s+/).filter(Boolean);
-  let idx = 0;
-  const inputFn = function () {
-    if (idx >= tokens.length) return undefined;
-    return tokens[idx++];
+  setRunningState(true);
+  let lineCount = 0;
+  _lastOutputDiv = null;
+
+  const preloaded = String(inputRaw).trim().split(/\s+/).filter(Boolean);
+
+  const inputFn = async function (prompt) {
+    if (!_running) return undefined;
+    if (preloaded.length > 0) return preloaded.shift();
+    return await injectTerminalInput(outputBox);
   };
 
-  const lines = [];
-  const outputFn = function (text) { lines.push(String(text)); };
+  const outputFn = function (text) {
+    if (!_running) return;
+    const div = document.createElement("div");
+    div.className = "output-line";
+    div.style.animationDelay = `${Math.min(lineCount * 30, 300)}ms`;
+    div.textContent = text;
+    outputBox.appendChild(div);
+    _lastOutputDiv = div;
+    lineCount++;
+    outputBox.scrollTop = outputBox.scrollHeight;
+  };
 
   try {
     const interpreter = new AlgoInterpreter({ input: inputFn, output: outputFn });
-    interpreter.run(processed);
+    await interpreter.run(processed);
 
-    if (lines.length === 0) {
-      outputBox.innerHTML = '<span class="output-placeholder">Program ran with no output.</span>';
-    } else {
-      lines.forEach((line, i) => {
-        const div = document.createElement("div");
-        div.className = "output-line";
-        div.style.animationDelay = `${Math.min(i * 30, 300)}ms`;
-        div.textContent = line;
-        outputBox.appendChild(div);
-      });
+    if (!_running) return;
+
+    if (lineCount === 0) {
+      outputBox.innerHTML =
+        '<span class="output-placeholder">Program ran with no output.</span>';
     }
     statusBadge.textContent = "OK";
     statusBadge.className = "status-badge ok";
   } catch (err) {
-    showError(err.message);
+    if (_running) showError(err.message);
+  } finally {
+    setRunningState(false);
   }
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-//  WORKER-BASED EXECUTION  (interactive terminal — uses SharedArrayBuffer)
-// ═══════════════════════════════════════════════════════════════════════════
-
-/**
- * Write a string value into the SharedArrayBuffer and wake the worker.
- * Layout: int32[0]=flag, int32[1]=length, int32[2..]=charCodes
- */
-function provideInput(sab, value) {
-  const int32 = new Int32Array(sab);
-  const str = String(value);
-  int32[1] = str.length;
-  for (let i = 0; i < str.length; i++) {
-    int32[i + 2] = str.charCodeAt(i);
-  }
-  Atomics.store(int32, 0, 1);
-  Atomics.notify(int32, 0);
-}
-
-/**
- * Inject an interactive input field into the output box.
- * The field appears inline at the end of the last output line (mimicking a terminal).
- */
 function injectTerminalInput(outputBox) {
-  // If there's already an existing output-line from a Write(), append to it;
-  // otherwise create a new line with a generic prompt.
-  let hostDiv = _lastOutputDiv;
-  if (!hostDiv) {
-    hostDiv = document.createElement("div");
-    hostDiv.className = "output-line terminal-line";
-    hostDiv.appendChild(document.createTextNode("? "));
-    outputBox.appendChild(hostDiv);
-  }
-
-  // Add the "terminal-line" marker to the host div
-  hostDiv.classList.add("terminal-line");
-
-  const inp = document.createElement("input");
-  inp.type = "text";
-  inp.className = "terminal-input";
-  inp.setAttribute("autocomplete", "off");
-  inp.setAttribute("spellcheck", "false");
-  hostDiv.appendChild(inp);
-
-  // Scroll to bottom and focus
-  outputBox.scrollTop = outputBox.scrollHeight;
-  inp.focus();
-
-  // When the user presses Enter, provide the value to the worker
-  inp.addEventListener("keydown", function handler(e) {
-    if (e.key !== "Enter") return;
-    e.preventDefault();
-    inp.removeEventListener("keydown", handler);
-
-    const value = inp.value;
-
-    // Replace the live input with static text
-    const span = document.createElement("span");
-    span.className = "terminal-value";
-    span.textContent = value;
-    inp.parentNode.replaceChild(span, inp);
-
-    // Feed the value to the blocked worker
-    provideInput(_sab, value);
-  });
-}
-
-function runWithWorker(processed, preloaded) {
-  const outputBox = document.getElementById("output-box");
-  const statusBadge = document.getElementById("output-status");
-
-  // ── Create shared buffer (4 KB = 1024 int32s) ──────────────────────────
-  _sab = new SharedArrayBuffer(4096);
-  const int32 = new Int32Array(_sab);
-  Atomics.store(int32, 0, 0); // flag = idle
-
-  // ── Spawn a fresh worker ───────────────────────────────────────────────
-  _worker = new Worker('js/worker.js');
-  _lastOutputDiv = null;
-  let lineCount = 0;
-
-  setRunningState(true);
-
-  // ── Handle messages from the worker ────────────────────────────────────
-  _worker.onmessage = function (e) {
-    const msg = e.data;
-
-    switch (msg.type) {
-
-      case 'write': {
-        const div = document.createElement("div");
-        div.className = "output-line";
-        div.style.animationDelay = `${Math.min(lineCount * 30, 300)}ms`;
-        div.textContent = msg.text;
-        outputBox.appendChild(div);
-        _lastOutputDiv = div;
-        lineCount++;
-        outputBox.scrollTop = outputBox.scrollHeight;
-        break;
-      }
-
-      case 'read': {
-        injectTerminalInput(outputBox);
-        break;
-      }
-
-      case 'done': {
-        if (lineCount === 0) {
-          outputBox.innerHTML =
-            '<span class="output-placeholder">Program ran with no output.</span>';
-        }
-        statusBadge.textContent = "OK";
-        statusBadge.className = "status-badge ok";
-        terminateWorker();
-        break;
-      }
-
-      case 'error': {
-        showError(msg.message);
-        terminateWorker();
-        break;
-      }
+  return new Promise((resolve) => {
+    let hostDiv = _lastOutputDiv;
+    if (!hostDiv) {
+      hostDiv = document.createElement("div");
+      hostDiv.className = "output-line terminal-line";
+      hostDiv.appendChild(document.createTextNode("? "));
+      outputBox.appendChild(hostDiv);
     }
-  };
+    hostDiv.classList.add("terminal-line");
 
-  _worker.onerror = function (e) {
-    showError(e.message || "Worker error");
-    terminateWorker();
-  };
+    const inp = document.createElement("input");
+    inp.type = "text";
+    inp.className = "terminal-input";
+    inp.setAttribute("autocomplete", "off");
+    inp.setAttribute("spellcheck", "false");
+    hostDiv.appendChild(inp);
 
-  // ── Start execution ────────────────────────────────────────────────────
-  _worker.postMessage({
-    type: 'run',
-    source: processed,
-    preloaded: preloaded,
-    sab: _sab
+    outputBox.scrollTop = outputBox.scrollHeight;
+    inp.focus();
+
+    inp.addEventListener("keydown", function handler(e) {
+      if (e.key !== "Enter") return;
+      e.preventDefault();
+      inp.removeEventListener("keydown", handler);
+
+      const value = inp.value;
+      const span = document.createElement("span");
+      span.className = "terminal-value";
+      span.textContent = value;
+      inp.parentNode.replaceChild(span, inp);
+
+      _inputResolver = null;
+      resolve(value);
+    });
+
+    _inputResolver = resolve;
   });
 }
 
@@ -359,25 +262,7 @@ function runAlgorithm() {
 
   const processed = preprocessSource(source);
 
-  // ── Preloaded inputs from the Input textarea ───────────────────────────
-  const preloaded = String(inputRaw).trim().split(/\s+/).filter(Boolean);
-
-  // ── Choose execution path ──────────────────────────────────────────────
-  if (HAS_SAB) {
-    runWithWorker(processed, preloaded);
-  } else {
-    // Show one-time fallback banner
-    if (!_sabWarningShown) {
-      _sabWarningShown = true;
-      const banner = document.createElement("div");
-      banner.className = "sab-warning";
-      banner.innerHTML =
-        '\u26A0\uFE0F Interactive input unavailable \u2014 ' +
-        'enter values in the <strong>Input</strong> box above.';
-      outputBox.appendChild(banner);
-    }
-    runSync(processed, inputRaw);
-  }
+  runAsync(processed, inputRaw);
 }
 
 function clearOutput() {
