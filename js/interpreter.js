@@ -297,7 +297,7 @@ class Parser {
 
     // Parse functions
     const functions = {};
-    while ((this.peek().kind === "KEYWORD" && (this.peek().value === "FUNCTION" || this.peek().value === "PROCEDURE")) ||
+    while ((this.peek().kind === "KEYWORD" && (this.peek().value === "FUNCTION" || this.peek().value === "PROCEDURE" || this.peek().value === "VOID")) ||
            (this.peek().kind === "IDENT" && this.peekType() === "FUNCTION")) {
       const funcDef = this.parseFunction();
       functions[funcDef.name] = funcDef;
@@ -498,6 +498,18 @@ class Parser {
     }
 
     const target = this.parseLvalue();
+    
+    // Support function call as a statement (Procedure)
+    if (this.match("OP", "(")) {
+      const args = [];
+      if (!this.match("OP", ")")) {
+        args.push(this.parseExpr());
+        while (this.match("OP", ",")) args.push(this.parseExpr());
+        this.expect("OP", ")");
+      }
+      return new Call(target.name, args);
+    }
+
     // Support i++ and i-- as statements (USTHB course Week 2)
     const nextTok = this.peek();
     if (nextTok.kind === "OP" && nextTok.value === "++") {
@@ -858,10 +870,12 @@ class Parser {
 }
 
 class Context {
-  constructor(varTypes, functions = {}) {
+  constructor(varTypes, functions = {}, enums = {}, output = null) {
     this.vars = {};
     this.varTypes = varTypes;
     this.functions = functions;
+    this.enums = enums;
+    this.output = output;
     this.lastPrompt = "";
     this.pointers = new Map(); // Track pointer addresses
     this.nextAddress = 1000; // Start addresses from 1000
@@ -946,7 +960,7 @@ class Program {
   }
 
   async run(input, output) {
-    const ctx = new Context(this.varTypes, this.functions);
+    const ctx = new Context(this.varTypes, this.functions, this.enums, output);
     for (const s of this.stmts) {
       await s.exec(ctx, input, output);
     }
@@ -966,6 +980,10 @@ class VarRef {
   }
 
   async eval(ctx) {
+    if (ctx.enums && ctx.enums[this.name]) {
+      // Direct access to enum members like Days.Monday
+      if (this.fields.length === 1) return this.fields[0];
+    }
     let val = ctx.get(this.name);
     for (const idxExpr of this.indices) {
       const idx = parseInt(await evalExpr(idxExpr, ctx), 10);
@@ -1249,12 +1267,7 @@ class BinOp {
   }
 }
 
-class Call {
-  constructor(name, args) {
-    this.name = name;
-    this.args = args;
-  }
-}
+
 
 class CGenerator {
   constructor(program) {
@@ -1280,6 +1293,10 @@ class CGenerator {
     if (t === "CHARACTER") return "char";
     if (t === "STRING") return "char*";
     if (t === "VOID") return "void";
+    // Check if it's a known struct or enum name (case-insensitive for pseudo-code compatibility)
+    const customType = Object.keys(this.program.structs).find(k => k.toUpperCase() === t) ||
+                       Object.keys(this.program.enums).find(k => k.toUpperCase() === t);
+    if (customType) return customType;
     return "double";
   }
 
@@ -1297,6 +1314,16 @@ class CGenerator {
       Object.entries(structDef.fields).forEach(([fieldName, fieldType]) => {
         this.emit(`${this.cType(fieldType)} ${fieldName};`);
       });
+      this.indent--;
+      this.emit(`} ${name};`);
+      this.emit("");
+    });
+
+    // Generate enumeration definitions
+    Object.entries(this.program.enums).forEach(([name, enumDef]) => {
+      this.emit(`typedef enum {`);
+      this.indent++;
+      this.emit(`${enumDef.values.join(", ")}`);
       this.indent--;
       this.emit(`} ${name};`);
       this.emit("");
@@ -1510,6 +1537,10 @@ class CGenerator {
   }
 
   lvalueToC(lvalue) {
+    if (this.program.enums[lvalue.name]) {
+      // In C, accessing Days.Monday is typically just Monday
+      if (lvalue.fields.length === 1) return lvalue.fields[0];
+    }
     let code = lvalue.name;
     lvalue.indices.forEach((idx) => {
       const idxCode = this.exprToC(idx).code;
@@ -1566,7 +1597,7 @@ class CGenerator {
   }
 
   escapeFormatString(text) {
-    return String(text).replace(/\\/g, "\\\\").replace(/"/g, '\\"').replace(/\n/g, "\\n");
+    return String(text).replace(/\\/g, "\\\\").replace(/"/g, '\\"').replace(/\n/g, "\\n").replace(/\t/g, "\\t");
   }
 }
 
@@ -1624,7 +1655,7 @@ async function evalExpr(node, ctx) {
     const funcDef = ctx.functions[node.name];
     if (!funcDef) throw new Error(`Undefined function ${node.name}`);
     
-    const funcCtx = new Context(funcDef.varTypes, ctx.functions);
+    const funcCtx = new Context(funcDef.varTypes, ctx.functions, ctx.enums, ctx.output);
     funcCtx.pointers = ctx.pointers; // Share pointer memory
     
     // Bind parameters
@@ -1640,13 +1671,23 @@ async function evalExpr(node, ctx) {
     
     // Execute function body
     for (const s of funcDef.body) {
-      await s.exec(funcCtx, () => {}, () => {});
+      await s.exec(funcCtx, null, (t) => ctx.output(t));
       if (funcCtx.shouldReturn) break;
     }
     
     return funcCtx.returnValue || 0;
   }
   throw new Error("Invalid expression");
+}
+
+class Call {
+  constructor(name, args) {
+    this.name = name;
+    this.args = args;
+  }
+  async exec(ctx, input, output) {
+    await evalExpr(this, ctx);
+  }
 }
 
 function generateC(source) {
