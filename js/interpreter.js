@@ -1534,7 +1534,7 @@ class CGenerator {
       if (node.op === "MOD") return { code: `(${a.code} % ${b.code})`, type: "int" };
       if (node.op === "DIV") return { code: `(${a.code} / ${b.code})`, type: "int" };
       if (["=", "<>", "!=", "<", "<=", ">", ">="].includes(node.op)) {
-        const op = node.op === "<>" ? "!=" : node.op;
+        const op = node.op === "<>" || node.op === "!=" ? "!=" : node.op === "=" ? "==" : node.op;
         return { code: `(${a.code} ${op} ${b.code})`, type: "bool" };
       }
       if (node.op === "AND") return { code: `(${a.code} && ${b.code})`, type: "bool" };
