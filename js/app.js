@@ -31,13 +31,13 @@ function clearEditorErrors() {
 // ── Preprocess source ────────────────────────────────────────────────────
 function preprocessSource(src) {
   return src
-    .replace(/\bEnd\s+If\b/gi,     "EndIf")
-    .replace(/\bEnd\s+For\b/gi,    "EndFor")
-    .replace(/\bEnd\s+While\b/gi,  "EndWhile")
-    .replace(/\bEnd\s+Switch\b/gi, "EndSwitch")
-    .replace(/\bElse\s*If\b/gi,    "ElseIf")
-    .replace(/\bprint\s*\(/gi,     "Write(")
-    .replace(/\\\\/g,              "//");
+    .replace(/\bEnd[ \t]+If\b/gi,     "EndIf")
+    .replace(/\bEnd[ \t]+For\b/gi,    "EndFor")
+    .replace(/\bEnd[ \t]+While\b/gi,  "EndWhile")
+    .replace(/\bEnd[ \t]+Switch\b/gi, "EndSwitch")
+    .replace(/\bElse[ \t]+If\b/gi,    "ElseIf")
+    .replace(/\bprint\s*\(/gi,        "Write(")
+    .replace(/\\\\/g,                 "//");
 }
 
 // ── HTML escape ──────────────────────────────────────────────────────────
