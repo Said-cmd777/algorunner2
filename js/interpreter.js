@@ -57,6 +57,9 @@ const KEYWORDS = new Set([
   "STRUCT",
   "ENUMERATION",
   "NULL",
+  "VAR",
+  "ALLOUER",
+  "LIBERER",
 ]);
 
 class Token {
@@ -410,8 +413,11 @@ class Parser {
       returnType = "VOID";
     } else if (this.peek().kind === "KEYWORD" && this.peek().value === "VOID") {
       this.advance();
-      this.expect("KEYWORD", "FUNCTION");
-      isProcedure = true;
+      if (this.match("KEYWORD", "PROCEDURE")) {
+        isProcedure = true;
+      } else {
+        this.expect("KEYWORD", "FUNCTION");
+      }
       returnType = "VOID";
     } else if (this.peek().kind === "KEYWORD" && this.peek().value === "FUNCTION") {
       this.advance();
@@ -428,10 +434,12 @@ class Parser {
     const params = [];
     if (!this.match("OP", ")")) {
       do {
+        let isVar = false;
+        if (this.match("KEYWORD", "VAR")) isVar = true;
         const paramName = this.expect("IDENT").value;
         this.expect("OP", ":");
         const paramType = this.parseType().value;
-        params.push({ name: paramName, type: paramType });
+        params.push({ name: paramName, type: paramType, isVar });
       } while (this.match("OP", ","));
       this.expect("OP", ")");
     }
@@ -471,21 +479,29 @@ class Parser {
   }
 
   parseType() {
+    // Support prefix pointers e.g. *integer
+    let isPointer = false;
+    if (this.match("OP", "*")) isPointer = true;
+
     const tok = this.peek();
     const val = String(tok.value).toUpperCase();
+    let baseType = "";
+
     if (["INTEGER", "FLOAT", "REAL", "BOOLEAN", "CHARACTER", "STRING", "VOID"].includes(val)) {
       this.advance();
-      // Check for pointer
-      if (this.match("OP", "*")) return new Token("TYPE", "*" + val);
-      return new Token("TYPE", val);
-    }
-    if (tok.kind === "IDENT") {
+      baseType = val;
+    } else if (tok.kind === "IDENT") {
       this.advance();
-      // Check for pointer
-      if (this.match("OP", "*")) return new Token("TYPE", "*" + tok.value);
-      return tok;
+      baseType = tok.value;
+    } else {
+      throw new Error(`Expected type at ${tok.line}:${tok.col}: found ${tok.value}`);
     }
-    throw new Error(`Expected type at ${tok.line}:${tok.col}`);
+
+    // Support suffix pointers e.g. integer*
+    if (this.match("OP", "*")) isPointer = true;
+
+    if (isPointer) return new Token("TYPE", "*" + baseType);
+    return new Token("TYPE", baseType);
   }
 
   peekType() {
@@ -525,6 +541,20 @@ class Parser {
       if (tok.value === "REPEAT") return this.parseRepeatUntil();
       if (tok.value === "RETURN") return this.parseReturn();
       if (tok.value === "SWITCH") return this.parseSwitch();
+      if (tok.value === "ALLOUER") {
+        this.advance();
+        this.expect("OP", "(");
+        const target = this.parseLvalue();
+        this.expect("OP", ")");
+        return new Allouer(target);
+      }
+      if (tok.value === "LIBERER") {
+        this.advance();
+        this.expect("OP", "(");
+        const target = this.parseLvalue();
+        this.expect("OP", ")");
+        return new Liberer(target);
+      }
     }
 
     if (this.peek().kind === "IDENT") {
@@ -579,6 +609,10 @@ class Parser {
         indices.push(idx);
       } else if (this.match("OP", ".")) {
         fields.push(this.expect("IDENT").value);
+      } else if (this.match("OP", "^")) {
+        // Pointer dereference alias: p^ is same as *p
+        // We can represent this by wrapping current name in a dereference operation
+        fields.push("__DEREF__");
       } else {
         break;
       }
@@ -892,6 +926,8 @@ class Parser {
           indices.push(idx);
         } else if (this.match("OP", ".")) {
           fields.push(this.expect("IDENT").value);
+        } else if (this.match("OP", "^")) {
+          fields.push("__DEREF__");
         } else {
           break;
         }
@@ -914,6 +950,15 @@ class Context {
     this.nextAddress = 1000; // Start addresses from 1000
   }
 
+  set(name, value) {
+    if (this.vars[name] instanceof Reference) {
+      const ref = this.vars[name];
+      ref.lvalue.assign(ref.ctx, value);
+      return;
+    }
+    this.vars[name] = value;
+  }
+
   get(name) {
     if (!(name in this.vars)) {
       const type = (this.varTypes[name] || "").toUpperCase();
@@ -923,11 +968,11 @@ class Context {
         this.vars[name] = 0;
       }
     }
-    return this.vars[name];
-  }
-
-  set(name, value) {
-    this.vars[name] = value;
+    let val = this.vars[name];
+    if (val instanceof Reference) {
+      return val.lvalue.eval(val.ctx);
+    }
+    return val;
   }
 
   castForType(name, rawValue) {
@@ -1028,45 +1073,62 @@ class VarRef {
       }
     }
     for (const field of this.fields) {
-      if (typeof val === "object" && val !== null) {
+      if (field === "__DEREF__") {
+        val = ctx.dereference(val);
+      } else if (typeof val === "object" && val !== null) {
         val = val[field];
       } else {
-        throw new Error(`Cannot access field ${field} of non-struct value`);
+        throw new Error(`Cannot access field ${field} of non-struct/pointer value`);
       }
     }
     return val;
   }
 
   async assign(ctx, value) {
-    if (!this.indices.length && !this.fields.length) {
+    if (this.indices.length === 0 && this.fields.length === 0) {
       ctx.set(this.name, value);
       return;
     }
-    let arr = ctx.get(this.name);
-    if (!Array.isArray(arr)) arr = [null];
-    let current = arr;
-    for (let i = 0; i < this.indices.length; i++) {
-      const idx = parseInt(await evalExpr(this.indices[i], ctx), 10);
-      if (idx < 1) throw new Error("Array indices are 1-based");
-      while (current.length <= idx) current.push(null);
-      if (i === this.indices.length - 1) {
-        if (this.fields.length) {
-          if (current[idx] == null) current[idx] = {};
-          let obj = current[idx];
-          for (let j = 0; j < this.fields.length - 1; j++) {
-            if (!(this.fields[j] in obj)) obj[this.fields[j]] = {};
-            obj = obj[this.fields[j]];
+
+    let current = ctx.get(this.name);
+
+    if (this.indices.length > 0) {
+      if (!Array.isArray(current)) current = [null];
+      for (let i = 0; i < this.indices.length; i++) {
+        const idx = parseInt(await evalExpr(this.indices[i], ctx), 10);
+        if (idx < 1) throw new Error("Array indices are 1-based");
+        while (current.length <= idx) current.push(null);
+        if (i === this.indices.length - 1) {
+          if (this.fields.length === 0) {
+             current[idx] = value;
+             return;
           }
-          obj[this.fields[this.fields.length - 1]] = value;
+          if (current[idx] == null) current[idx] = {};
+          current = current[idx];
         } else {
-          current[idx] = value;
+          if (current[idx] == null) current[idx] = [];
+          current = current[idx];
         }
-      } else {
-        if (current[idx] == null) current[idx] = [null];
-        current = current[idx];
       }
     }
-    ctx.set(this.name, arr);
+
+    // Handle fields (either from indices[last] or directly from the variable)
+    for (let j = 0; j < this.fields.length - 1; j++) {
+      const field = this.fields[j];
+      if (field === "__DEREF__") {
+        current = ctx.dereference(current);
+      } else {
+        if (current[field] == null) current[field] = {};
+        current = current[field];
+      }
+    }
+
+    const lastField = this.fields[this.fields.length - 1];
+    if (lastField === "__DEREF__") {
+      ctx.setDereference(current, value);
+    } else {
+      current[lastField] = value;
+    }
   }
 }
 
@@ -1279,6 +1341,28 @@ class Switch {
   }
 }
 
+class Allouer {
+  constructor(target) {
+    this.target = target;
+  }
+  async exec(ctx) {
+    // Allocate a new address and assign it to the target
+    const addr = ctx.allocateAddress(null);
+    await this.target.assign(ctx, addr);
+  }
+}
+
+class Liberer {
+  constructor(target) {
+    this.target = target;
+  }
+  async exec(ctx) {
+    const addr = await ctx.get(this.target.name);
+    ctx.pointers.delete(addr);
+    await this.target.assign(ctx, null);
+  }
+}
+
 class Literal {
   constructor(value) {
     this.value = value;
@@ -1308,6 +1392,7 @@ class CGenerator {
     this.lines = [];
     this.indent = 0;
     this.stepCounter = 0;
+    this.currentFunction = null;
   }
 
   emit(line) {
@@ -1364,8 +1449,13 @@ class CGenerator {
 
     // Generate function declarations and definitions
     Object.entries(this.program.functions).forEach(([funcName, funcDef]) => {
+      this.currentFunction = funcDef;
       const returnType = this.cType(funcDef.returnType);
-      const params = funcDef.params.map((p) => `${this.cType(p.type)} ${p.name}`).join(", ");
+      const params = funcDef.params.map((p) => {
+        let t = this.cType(p.type);
+        if (p.isVar) t = t + "*";
+        return `${t} ${p.name}`;
+      }).join(", ");
       this.emit(`${returnType} ${funcName}(${params}) {`);
       this.indent++;
       // Emit local variables
@@ -1381,6 +1471,7 @@ class CGenerator {
       this.indent--;
       this.emit("}");
       this.emit("");
+      this.currentFunction = null;
     });
 
     this.emit("int main(void) {");
@@ -1416,6 +1507,18 @@ class CGenerator {
   }
 
   emitStmt(stmt) {
+    if (stmt instanceof Allouer) {
+      const targetCode = this.lvalueToC(stmt.target);
+      const type = this.program.varTypes[stmt.target.name] || "void*";
+      const baseType = type.startsWith("*") ? type.substring(1) : type;
+      this.emit(`${targetCode} = (${this.cType(type)})malloc(sizeof(${this.cType(baseType)}));`);
+      return;
+    }
+    if (stmt instanceof Liberer) {
+      const targetCode = this.lvalueToC(stmt.target);
+      this.emit(`free(${targetCode});`);
+      return;
+    }
     if (stmt instanceof Assign) {
       const lhs = this.lvalueToC(stmt.target);
       const rhs = this.exprToC(stmt.expr).code;
@@ -1580,12 +1683,24 @@ class CGenerator {
       if (lvalue.fields.length === 1) return lvalue.fields[0];
     }
     let code = lvalue.name;
+    // If it's a VAR parameter, prefix with * for C
+    if (this.currentFunction) {
+      const p = this.currentFunction.params.find(p => p.name === lvalue.name);
+      if (p && p.isVar) {
+        code = `(*${code})`;
+      }
+    }
+
     lvalue.indices.forEach((idx) => {
       const idxCode = this.exprToC(idx).code;
       code += `[(${idxCode}) - 1]`;
     });
     lvalue.fields.forEach((field) => {
-      code += `.${field}`;
+      if (field === "__DEREF__") {
+        code = `*(${code})`;
+      } else {
+        code += `.${field}`;
+      }
     });
     return code;
   }
@@ -1628,7 +1743,14 @@ class CGenerator {
         const v = this.exprToC(node.args[0]);
         return { code: `sqrt(${v.code})`, type: "double" };
       }
-      const args = node.args.map((a) => this.exprToC(a).code).join(", ");
+      const funcDef = this.program.functions[node.name];
+      const args = node.args.map((a, i) => {
+        const info = this.exprToC(a);
+        if (funcDef && funcDef.params[i] && funcDef.params[i].isVar) {
+            return `&(${info.code})`; // Pass by reference in C
+        }
+        return info.code;
+      }).join(", ");
       return { code: `${node.name}(${args})`, type: "int" };
     }
     return { code: "0", type: "int" };
@@ -1703,8 +1825,14 @@ async function evalExpr(node, ctx) {
     
     for (let i = 0; i < funcDef.params.length; i++) {
       const param = funcDef.params[i];
-      const argValue = await evalExpr(node.args[i], ctx);
-      funcCtx.set(param.name, argValue);
+      const arg = node.args[i];
+      if (param.isVar) {
+        if (!(arg instanceof VarRef)) throw new Error(`VAR parameter ${param.name} expects a variable, got ${arg.constructor ? arg.constructor.name : typeof arg}`);
+        funcCtx.set(param.name, new Reference(ctx, arg));
+      } else {
+        const argValue = await evalExpr(arg, ctx);
+        funcCtx.set(param.name, argValue);
+      }
     }
     
     // Execute function body
@@ -1716,6 +1844,13 @@ async function evalExpr(node, ctx) {
     return funcCtx.returnValue || 0;
   }
   throw new Error("Invalid expression");
+}
+
+class Reference {
+  constructor(ctx, lvalue) {
+    this.ctx = ctx;
+    this.lvalue = lvalue;
+  }
 }
 
 class Call {
@@ -1742,7 +1877,10 @@ if (typeof window !== "undefined") {
 }
 
 if (typeof module !== "undefined" && module.exports) {
-  module.exports = { AlgoInterpreter, Lexer, Parser, CGenerator, generateC };
+  module.exports = { 
+    AlgoInterpreter, Lexer, Parser, CGenerator, generateC,
+    Context, evalExpr, VarRef, Literal, Call, UnaryOp, BinOp, Assign, Return, Read, Write, If, For, While, DoWhile, RepeatUntil, Switch
+  };
 }
 
 // ── PATCH: Add "END IF" (with space) as alias for ENDIF ──────────────────
