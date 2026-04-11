@@ -1279,6 +1279,7 @@ class CGenerator {
     if (t === "BOOLEAN") return "bool";
     if (t === "CHARACTER") return "char";
     if (t === "STRING") return "char*";
+    if (t === "VOID") return "void";
     return "double";
   }
 
@@ -1412,10 +1413,22 @@ class CGenerator {
       this.indent++;
       stmt.body.forEach((s) => this.emitStmt(s));
       this.indent--;
-      if (stmt.elseBody.length) {
+
+      let currentElse = stmt.elseBody;
+      while (currentElse && currentElse.length === 1 && currentElse[0] instanceof If) {
+        const nextIf = currentElse[0];
+        const nextCond = this.exprToC(nextIf.cond).code;
+        this.emit(`} else if (${nextCond}) {`);
+        this.indent++;
+        nextIf.body.forEach((s) => this.emitStmt(s));
+        this.indent--;
+        currentElse = nextIf.elseBody;
+      }
+
+      if (currentElse && currentElse.length > 0) {
         this.emit("} else {");
         this.indent++;
-        stmt.elseBody.forEach((s) => this.emitStmt(s));
+        currentElse.forEach((s) => this.emitStmt(s));
         this.indent--;
       }
       this.emit("}");
