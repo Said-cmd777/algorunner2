@@ -231,8 +231,38 @@ class Lexer {
       throw new Error(`Unexpected character '${ch}' at ${this.line}:${this.col}`);
     }
 
-    tokens.push(new Token("EOF", "", this.line, this.col));
-    return tokens;
+    // --- PATCH: Merge spaced keywords like END IF, END FOR ---
+    const mergedTokens = [];
+    for (let i = 0; i < tokens.length; i++) {
+        const current = tokens[i];
+        const next = tokens[i+1];
+        if (current.kind === "KEYWORD" && current.value === "END" && next && next.kind === "KEYWORD") {
+            if (next.value === "IF") {
+                mergedTokens.push(new Token("KEYWORD", "ENDIF", current.line, current.col));
+                i++; continue;
+            }
+            if (next.value === "FOR") {
+                mergedTokens.push(new Token("KEYWORD", "ENDFOR", current.line, current.col));
+                i++; continue;
+            }
+            if (next.value === "WHILE") {
+                mergedTokens.push(new Token("KEYWORD", "ENDWHILE", current.line, current.col));
+                i++; continue;
+            }
+            if (next.value === "SWITCH") {
+                mergedTokens.push(new Token("KEYWORD", "ENDSWITCH", current.line, current.col));
+                i++; continue;
+            }
+        }
+        // Alias: PRINT -> WRITE
+        if (current.kind === "IDENT" && current.value.toUpperCase() === "PRINT") {
+          mergedTokens.push(new Token("KEYWORD", "WRITE", current.line, current.col));
+          continue;
+        }
+        mergedTokens.push(current);
+    }
+    mergedTokens.push(new Token("EOF", "", this.line, this.col));
+    return mergedTokens;
   }
 }
 
@@ -497,35 +527,38 @@ class Parser {
       if (tok.value === "SWITCH") return this.parseSwitch();
     }
 
-    const target = this.parseLvalue();
-    
-    // Support function call as a statement (Procedure)
-    if (this.match("OP", "(")) {
-      const args = [];
-      if (!this.match("OP", ")")) {
-        args.push(this.parseExpr());
-        while (this.match("OP", ",")) args.push(this.parseExpr());
-        this.expect("OP", ")");
+    if (this.peek().kind === "IDENT") {
+      const target = this.parseLvalue();
+      
+      // Support function call as a statement (Procedure)
+      if (this.match("OP", "(")) {
+        const args = [];
+        if (!this.match("OP", ")")) {
+          args.push(this.parseExpr());
+          while (this.match("OP", ",")) args.push(this.parseExpr());
+          this.expect("OP", ")");
+        }
+        return new Call(target.name, args);
       }
-      return new Call(target.name, args);
+
+      // Support i++ and i-- as statements (USTHB course Week 2)
+      const nextTok = this.peek();
+      if (nextTok.kind === "OP" && nextTok.value === "++") {
+        this.advance();
+        return new Assign(target, new BinOp("+", new VarRef(target.name, target.indices, target.fields), new Literal(1)));
+      }
+      if (nextTok.kind === "OP" && nextTok.value === "--") {
+        this.advance();
+        return new Assign(target, new BinOp("-", new VarRef(target.name, target.indices, target.fields), new Literal(1)));
+      }
+
+      // Standard assignment
+      this.expect("OP", "<-");
+      const expr = this.parseExpr();
+      return new Assign(target, expr);
     }
 
-    // Support i++ and i-- as statements (USTHB course Week 2)
-    const nextTok = this.peek();
-    if (nextTok.kind === "OP" && nextTok.value === "++") {
-      this.advance();
-      return new Assign(target, new BinOp("+", new VarRef(target.name, target.indices, target.fields), new Literal(1)));
-    }
-    if (nextTok.kind === "OP" && nextTok.value === "--") {
-      this.advance();
-      return new Assign(target, new BinOp("-", new VarRef(target.name, target.indices, target.fields), new Literal(1)));
-    }
-    const assignTok = this.expect("OP");
-    if (!["<-", "<--", "="].includes(assignTok.value)) {
-      throw new Error(`Expected assignment '<-' at ${assignTok.line}:${assignTok.col}`);
-    }
-    const expr = this.parseExpr();
-    return new Assign(target, expr);
+    throw new Error(`Unexpected token at ${tok.line}:${tok.col}: ${tok.value}`);
   }
 
   parseReturn() {
@@ -1528,6 +1561,11 @@ class CGenerator {
       this.emit("}");
       return;
     }
+    if (stmt instanceof Call) {
+      const code = this.exprToC(stmt).code;
+      this.emit(`${code};`);
+      return;
+    }
   }
 
   lvalueToCWithType(lvalue) {
@@ -1698,8 +1736,14 @@ function generateC(source) {
   return program.toC();
 }
 
-window.AlgoInterpreter = AlgoInterpreter;
-window.generateC = generateC;
+if (typeof window !== "undefined") {
+  window.AlgoInterpreter = AlgoInterpreter;
+  window.generateC = generateC;
+}
+
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = { AlgoInterpreter, Lexer, Parser, CGenerator, generateC };
+}
 
 // ── PATCH: Add "END IF" (with space) as alias for ENDIF ──────────────────
 // The USTHB academic syntax uses "End If;" with a space between the two words.
